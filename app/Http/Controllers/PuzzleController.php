@@ -94,8 +94,8 @@ class PuzzleController extends Controller
      */
     public function destroy(Puzzle $puzzle)
     {
-        $puzzle -> delete();
-        return back()->with('message', "Le puzzle a bien été supprimé !");
+        $puzzles = Puzzle::find($id);
+        $puzzles -> delete();
     }
 }
 

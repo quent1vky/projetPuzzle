@@ -5,6 +5,13 @@
         </h2>
     </x-slot>
 
+        <!-- Message de réussite -->
+        @if (session()->has('message'))
+        <div class="mt-3 mb-4 list-disc list-inside text-sm text-green-600">
+            {{ session('message') }}
+        </div>
+        @endif
+
     <div class="container flex justify-center mx-auto">
         <div class="flex flex-col">
             <div class="w-full">
@@ -43,6 +50,11 @@
                                         <form id="destroy{{ $puzzle->id }}" action="{{ route('puzzles.destroy', $puzzle->id) }}" method="POST" style="display:none;">
                                             @csrf
                                             @method('DELETE')
+                                            @if (session()->has('message'))
+                                                <div class="mt-3 mb-4 list-disc list-inside text-sm text-green-600">
+                                                    {{ session('message') }}
+                                                </div>
+                                            @endif
                                         </form>
                                     </td>
                                 </tr>

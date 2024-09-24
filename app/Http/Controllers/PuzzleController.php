@@ -92,10 +92,10 @@ class PuzzleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Puzzle $puzzle)
     {
-        $puzzles = Puzzle::find($id);
-        $puzzles -> delete();
+        $puzzle -> delete();
+        return back()->with('message', "Le puzzle a bien été supprimé !");
     }
 }
 

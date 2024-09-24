@@ -96,6 +96,8 @@ class PuzzleController extends Controller
     {
         $puzzles = Puzzle::find($id);
         $puzzles -> delete();
+        //rafraichir la page
+        return back()->with('message', "Le puzzle a bien été supprimé !");
     }
 }
 

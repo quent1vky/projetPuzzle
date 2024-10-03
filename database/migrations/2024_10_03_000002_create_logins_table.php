@@ -16,13 +16,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('role', 50);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Clé étrangère vers users
             $table->rememberToken();
-            $table->string('role');
-            $table->unsignedBigInteger('user_id'); // Définir la colonne user_id
             $table->timestamps();
-
-            // Définition de la clé étrangère
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

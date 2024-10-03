@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('puzzles', function (Blueprint $table) {
             $table->id();
-            $table->String('nom');
-            $table->String ('categorie');
-            $table->String ('description');
-            $table->String ('image');
+            $table->string('nom');
+            $table->string ('description');
+            $table->string ('path_image');
             $table->float ('prix');
+            $table->unsignedBigInteger('idCategorie');
             $table->timestamps();
 
+            $table->foreign('idCategorie')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

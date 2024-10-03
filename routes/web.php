@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PuzzleController;
+use App\Http\Controllers\PDFController;
 
 
 /*
@@ -35,3 +36,6 @@ Route::middleware('auth')->group(function () {
 //gérer toutes les routes de puzzle ==> l'utilisateur doit être connecté pour accéder à ces routes
 Route::resource ('puzzles', PuzzleController :: class ) -> middleware ('auth');
 require __DIR__.'/auth.php';
+
+//gérer la route pour generer le pdf
+Route::get('pdf', [PDFController::class, 'generatePDF']);

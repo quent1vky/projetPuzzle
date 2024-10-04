@@ -2,11 +2,46 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- First Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <x-input-label for="first_name" :value="__('First Name')" />
+            <x-text-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="given-name" />
+            <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
+        </div>
+
+        <!-- Last Name -->
+        <div class="mt-4">
+            <x-input-label for="last_name" :value="__('Last Name')" />
+            <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autocomplete="family-name" />
+            <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
+        </div>
+
+        <!-- Age -->
+        <div class="mt-4">
+            <x-input-label for="age" :value="__('Age')" />
+            <x-text-input id="age" class="block mt-1 w-full" type="number" name="age" :value="old('age')" required />
+            <x-input-error :messages="$errors->get('age')" class="mt-2" />
+        </div>
+
+        <!-- Postal Code -->
+        <div class="mt-4">
+            <x-input-label for="code_postal" :value="__('Postal Code')" />
+            <x-text-input id="code_postal" class="block mt-1 w-full" type="text" name="code_postal" :value="old('code_postal')" required autocomplete="postal-code" />
+            <x-input-error :messages="$errors->get('code_postal')" class="mt-2" />
+        </div>
+
+        <!-- Address -->
+        <div class="mt-4">
+            <x-input-label for="address" :value="__('Address')" />
+            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required autocomplete="street-address" />
+            <x-input-error :messages="$errors->get('address')" class="mt-2" />
+        </div>
+
+        <!-- Telephone -->
+        <div class="mt-4">
+            <x-input-label for="tel" :value="__('Telephone')" />
+            <x-text-input id="tel" class="block mt-1 w-full" type="text" name="tel" :value="old('tel')" required autocomplete="tel" />
+            <x-input-error :messages="$errors->get('tel')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Login;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -31,21 +32,40 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'age' => ['required', 'integer'],
+            'code_postal' => ['required', 'string', 'max:10'],
+            'address' => ['required', 'string', 'max:255'],
+            'tel' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:logins'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Crée un enregistrement dans la table users
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'age' => $request->age,
+            'code_postal' => $request->code_postal,
+            'address' => $request->address,
+            'tel' => $request->tel,
         ]);
 
-        event(new Registered($user));
+        // Crée un enregistrement dans la table logins lié à l'utilisateur
+        $login = Login::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'user', // ou un autre rôle par défaut
+            'user_id' => $user->id, // Associe le login à l'utilisateur créé
+        ]);
 
-        Auth::login($user);
+        // Déclenche l'événement Registered
+        event(new Registered($login));
+
+        // Connecte l'utilisateur via le modèle Logins
+        Auth::login($login);
 
         return redirect(RouteServiceProvider::HOME);
     }
-}
+};

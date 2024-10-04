@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -48,9 +49,17 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        Auth::logout();
+        // Démarrer une transaction : Assurer l'integrité des donnees
+        // pas de suppression en cas d'erreur
+        DB::transaction(function () use ($user) {
+            // Supprimer l'entrée correspondante dans la table logins
+            \DB::table('logins')->where('id', $user->id)->delete();
+            // Supprimer l'entrée correspondante dans la table users
+            \DB::table('users')->where('id', $user->id)->delete();
 
-        $user->delete();
+            // Supprimer l'utilisateur
+            $user->delete();
+        });
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

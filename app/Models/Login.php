@@ -25,6 +25,12 @@ class Login extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function user()
+    {
+        // fonction qui s'assure que 'user_id' est bien la clé étrangère vers la table users
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
 
 

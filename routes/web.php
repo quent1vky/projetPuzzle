@@ -44,17 +44,15 @@ Route::middleware('auth')->group(function () {
 });
 
 
-//gérer toutes les routes de puzzle ==> l'utilisateur doit être connecté pour accéder à ces routes
-Route::resource ('puzzles', PuzzleController :: class ) -> middleware ('auth');
+
+//gérer toutes les routes de puzzle ==> l'utilisateur n'a pas besoin d'être connecté
+Route::resource ('puzzles', PuzzleController :: class ) -> middleware('auth');
+
+//gérer toutes les routes de categorie ==> l'utilisateur doit être connecté pour accéder à ces routes
+Route::resource('categories', CategoriesController :: class) -> middleware('auth');
 require __DIR__.'/auth.php';
 
 
 //gérer la route pour generer le pdf (l'utilisateur doit être connecté)
 Route::get('pdf', [PDFController::class, 'generatePDF']) -> middleware('auth');
-
-
-Route::resource ('categories', CategoriesController :: class ) -> middleware ('auth');
-require __DIR__.'/auth.php';
-
-
 

@@ -35,3 +35,4 @@
 
     </x-puzzles-card>
 </x-app-layout>
+

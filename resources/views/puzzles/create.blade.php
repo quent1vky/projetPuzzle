@@ -23,13 +23,6 @@
                 <x-input-error :messages="$errors->get('nom')" class="mt-2" />
             </div>
 
-            <!-- categorie -->
-            <div>
-                <x-input-label for="categorie" :value="__('categorie')" />
-                <x-text-input id="categorie" class="block mt-1 w-full" type="text" name="categorie" :value="old('categorie')" required autofocus />
-                <x-input-error :messages="$errors->get('categorie')" class="mt-2" />
-            </div>
-
             <!-- description -->
             <div>
                 <x-input-label for="description" :value="__('description')" />
@@ -39,9 +32,9 @@
 
             <!-- image -->
             <div>
-                <x-input-label for="image" :value="__('image')" />
-                <x-text-input id="image" class="block mt-1 w-full" type="text" name="image" required autofocus />
-                <x-input-error :messages="$errors->get('image')" class="mt-2" />
+                <x-input-label for="path_image" :value="__('image')" />
+                <x-text-input id="path_image" class="block mt-1 w-full" type="text" name="path_image" required autofocus />
+                <x-input-error :messages="$errors->get('path_image')" class="mt-2" />
             </div>
 
             <!-- prix -->
@@ -49,6 +42,13 @@
                 <x-input-label for="prix" :value="__('prix')" />
                 <x-text-input id="prix" class="block mt-1 w-full" type="number" step="0.01" name="prix" :value="old('prix')" required autofocus />
                 <x-input-error :messages="$errors->get('prix')" class="mt-2" />
+            </div>
+
+            <!-- categorie -->
+            <div>
+                <x-input-label for="categorie_id" :value="__('categorie')" />
+                <x-text-input id="categorie_id" class="block mt-1 w-full" type="text" name="categorie_id" :value="old('categorie_id')" required autofocus />
+                <x-input-error :messages="$errors->get('categorie_id')" class="mt-2" />
             </div>
 
 

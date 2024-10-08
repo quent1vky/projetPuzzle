@@ -32,20 +32,20 @@ class PuzzleController extends Controller
 
         $data = $request->validate([
             'nom' => 'required|max:100',
-            'categorie' => 'required|max:500',
             'description' => 'required|max:500',
-            'image' => 'required|max:100',
+            'path_image' => 'required|max:100',
             'prix' => 'required|numeric|between:0,99.99',
+            'categorie_id' => 'required|max:500',
         ]);
 
 
         //Creation du puzzle
         $puzzle = new Puzzle();
         $puzzle->nom = $request->nom;
-        $puzzle->categorie = $request->categorie;
         $puzzle->description = $request->description;
-        $puzzle->image = $request->image;
+        $puzzle->path_image = $request->path_image;
         $puzzle->prix = $request->prix;
+        $puzzle->categorie_id = $request->categorie_id;
         $puzzle->save();
         return back()->with('message', "Le puzzle a bien été crée !");
     }
@@ -97,6 +97,7 @@ class PuzzleController extends Controller
         $puzzle -> delete();
         return back()->with('message', "Le puzzle a bien supprimé !");
     }
+
 }
 
 

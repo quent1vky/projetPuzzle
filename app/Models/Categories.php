@@ -14,4 +14,9 @@ class Categories extends Model
         'description',
         'path_image',
     ];
+
+    public function puzzles()
+    {
+        return $this->hasMany(Puzzle::class, 'categorie_id'); // Assurez-vous que la relation est correctement définie
+    }
 }

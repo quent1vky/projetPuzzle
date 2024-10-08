@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PuzzleController;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\CategoriesController;
 
 
 /*
@@ -52,8 +53,8 @@ require __DIR__.'/auth.php';
 Route::get('pdf', [PDFController::class, 'generatePDF']) -> middleware('auth');
 
 
-//acceder au vue de puzzle sans être connecté (pas de middleware)
-//Route::resource ('puzzles', PuzzleController :: class );
+Route::resource ('categories', CategoriesController :: class ) -> middleware ('auth');
+require __DIR__.'/auth.php';
 
 
 

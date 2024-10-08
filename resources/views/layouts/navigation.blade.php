@@ -23,6 +23,10 @@
                     <x-nav-link :href="route('puzzles.index')" :active="request()->routeIs('puzzles.index')">
                         {{ __('Puzzles') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
+                        {{ __('Categories') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -33,18 +37,9 @@
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 <div>
-                                    <!-- Vérifie d'abord si l'utilisateur est connecté -->
-                                    @if (Auth::check())
-                                        <!-- Affiche le prénom de l'utilisateur -->
-                                        {{ Auth::user()->user->first_name }}
-                                    @else
-                                        <!-- Sinon, afficher 'invité' -->
-                                        <p>invité</p>
-                                    @endif
+                                    <!-- Afficher le nom de l'utilisateur depuis le modele user -->
+                                    {{ Auth::user()->user->first_name }}
                                 </div>
-
-
-
 
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -75,7 +70,10 @@
                 </div>
             @else
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
-                    <p>test boutton</p>
+                    <p>Invité(e)</p>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">@lang('Register-you')</a>
+                    @endif
                 </div>
             @endif
 
@@ -104,8 +102,8 @@
             <div>
                 @if (Auth::check())
                     <!-- Si l'utilisateur est connecté, affiche ses informations -->
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->tel }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->user->tel }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->user->email }}</div>
                 @else
                     <!-- Si l'utilisateur n'est pas connecté, affiche 'invité' ou d'autres informations pour les invités -->
                     <div class="font-medium text-base text-gray-800">invité</div>

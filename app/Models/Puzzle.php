@@ -9,11 +9,20 @@ class Puzzle extends Model
 {
     use HasFactory;
 
-    protected $puzzle = [
+    // Propriété pour définir les champs assignables en masse
+    protected $fillable = [
         'nom',
-        'categorie',
         'description',
-        'image',
+        'path_image',
         'prix',
+        'categorie_id',
     ];
+
+    // Récupérer les infos de catégories du puzzle
+    public function categorie()
+    {
+        return $this->belongsTo(Categories::class, 'categorie_id');
+    }
 }
+
+?>

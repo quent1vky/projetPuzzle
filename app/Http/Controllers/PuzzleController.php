@@ -55,8 +55,7 @@ class PuzzleController extends Controller
      */
     public function show(Puzzle $puzzle)
     {
-        // Passer le puzzle à la vue
-        return view('puzzles.show', compact('puzzle'));
+        return view('puzzles.show', compact('puzzle')); // Passer le puzzle à la vue
     }
 
     /**
@@ -75,15 +74,16 @@ class PuzzleController extends Controller
     {
         $data = $request->validate([
             'nom' => 'required|max:100',
-            'categorie' => 'required|max:100',
             'description' => 'required|max:500',
+            'path_mage' => 'required|max:500',
             'prix' => 'required|numeric|between:0,99.99',
+            'categorie_id' => 'required|exists:categories,id', // Verifier que la catégorie existe
         ]);
-
         $puzzle->nom = $request->nom;
-        $puzzle->categorie = $request->categorie;
         $puzzle->description = $request->description;
+        $puzzle->path_image = $request->path_image;
         $puzzle->prix = $request->prix;
+        $puzzle->categorie_id = $request->categorie_id;
         $puzzle->save();
         return back()->with('message', "Le puzzle a bien été mis à jour !");
     }

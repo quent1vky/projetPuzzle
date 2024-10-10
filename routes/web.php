@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PuzzleController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\BasketController;
+use App\Models\Puzzle;
 
 
 /*
@@ -26,14 +28,23 @@ Route::get('/', function () {
 
 // Route du dashboard accessible à tous
 Route::get('/dashboard', function () {
+    // Récupérer 4 puzzles
+    $puzzles = Puzzle::all();
     if (Auth::check()) {
-        // Utilisateur connecté, afficher son tableau de bord personnel
-        return view('dashboard', ['user' => Auth::user()]);
+        // Utilisateur connecté, afficher son tableau de bord personnel avec les puzzles
+        return view('dashboard', [
+            'user' => Auth::user(),
+            'puzzles' => $puzzles
+        ]);
     } else {
-        // Utilisateur non connecté, afficher une version limitée du dashboard
-        return view('dashboard', ['user' => null]);
+        // Utilisateur non connecté, afficher une version limitée du dashboard avec les puzzles
+        return view('dashboard', [
+            'user' => null,
+            'puzzles' => $puzzles
+        ]);
     }
 })->name('dashboard');
+
 
 
 
@@ -50,9 +61,15 @@ Route::resource ('puzzles', PuzzleController :: class ) -> middleware('auth');
 
 //gérer toutes les routes de categorie ==> l'utilisateur doit être connecté pour accéder à ces routes
 Route::resource('categories', CategoriesController :: class) -> middleware('auth');
+
+Route::resource('basket', BasketController :: class) -> middleware('auth');
+
+
 require __DIR__.'/auth.php';
 
 
 //gérer la route pour generer le pdf (l'utilisateur doit être connecté)
 Route::get('pdf', [PDFController::class, 'generatePDF']) -> middleware('auth');
+
+
 

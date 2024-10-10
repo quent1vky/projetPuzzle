@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            @lang('Afficher un puzzle')
+            {{ $puzzle->nom }}
         </h2>
     </x-slot>
 
@@ -33,6 +33,15 @@
             <p>{{ $puzzle->updated_at->format('d/m/Y') }}</p>
         @endif
 
+        <form action="" method="post">
+            <div class="flex items-center justify-end mt-4">
+                <x-primary-button class="ml-3">
+                    @lang('Add to Basket')
+                </x-primary-button>
+            </div>
+        </form>
+
     </x-puzzles-card>
 </x-app-layout>
+
 

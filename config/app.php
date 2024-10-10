@@ -187,4 +187,12 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+
+
+    'providers' => [
+        // ...,
+        // Le service provider du panier
+        App\Providers\BasketServiceProvider::class
+    ],
+
 ];

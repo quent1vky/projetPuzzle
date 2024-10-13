@@ -55,21 +55,29 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
 //gérer toutes les routes de puzzle ==> l'utilisateur n'a pas besoin d'être connecté
 Route::resource ('puzzles', PuzzleController :: class ) -> middleware('auth');
 
 //gérer toutes les routes de categorie ==> l'utilisateur doit être connecté pour accéder à ces routes
 Route::resource('categories', CategoriesController :: class) -> middleware('auth');
 
-Route::resource('basket', BasketController :: class) -> middleware('auth');
-
-
 require __DIR__.'/auth.php';
 
 
 //gérer la route pour generer le pdf (l'utilisateur doit être connecté)
 Route::get('pdf', [PDFController::class, 'generatePDF']) -> middleware('auth');
+
+
+// Les routes de gestion du panier
+Route::get('/basket', [BasketController::class, 'index'])->name('basket.index');
+Route::post('basket/store/{puzzle}', [BasketController::class, 'store'])->name('basket.store');
+Route::get('basket/edit/{puzzle}', [BasketController::class, 'edit'])->name('basket.edit');
+Route::get('basket/destroy', [BasketController::class, 'destroy'])->name('basket.destroy');
+
+
+
+
+
 
 
 

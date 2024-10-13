@@ -3,57 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Puzzle;
+use App\Repositories\BasketInterfaceRepository;
+use App\Repositories\BasketSessionRepository;
 
 class BasketController extends Controller
 {
 
-    protected $basketRepository; // L'instance BasketSessionRepository
+	protected $basketRepository; // L'instance BasketSessionRepository
 
     public function __construct (BasketInterfaceRepository $basketRepository) {
     	$this->basketRepository = $basketRepository;
     }
 
-
-    public function index()
-    {
-        return view("basket.index");
+    # Affichage du panier
+    public function index () {
+    	return view("basket.index"); // resources\views\basket\show.blade.php
     }
 
-
-    public function show(Basket $basket){
-        return view('basket.show', compact('basket')); // Passer le puzzle à la vue
+    # Ajout d'un produit au panier
+    public function store (Puzzle $puzzle, Request $request) {
+        $this->validate($request, [
+            "quantity" => "numeric|min:1"
+        ]);
+        $this->basketRepository->store($puzzle, $request->quantity);
+        return redirect()->route("basket.index")->withMessage("Produit ajouté au panier");
     }
 
-    # Ajouter/Mettre à jour un produit du panier
-	public function store (Puzzle $puzzle, $quantity) {
-		$basket = session()->get("basket"); // On récupère le panier en session
+    // Suppression d'un produit du panier
+    public function edit (Puzzle $puzzle) {
 
-		// Les informations du produit à ajouter
-		$puzzle_details = [
-			'name' => $puzzle->nom,
-			'price' => $puzzle->prix,
-			'quantité' => $quantity
-		];
+    	// Suppression du produit du panier par son identifiant
+    	$this->basketRepository->edit($puzzle);
 
-		$basket[$puzzle->id] = $puzzle_details; // On ajoute ou on met à jour le produit au panier
-		session()->put("basket", $basket); // On enregistre le panier
-        return back()->withMessage("Produit ajouté au panier");
-	}
+    	// Redirection vers le panier
+    	return back()->withMessage("Produit retiré du panier");
+    }
 
-    # Retirer un produit du panier
-	public function destroy (Puzzle $puzzle) {
-		$basket = session()->get("basket"); // On récupère le panier en session
-		unset($basket[$product->id]); // On supprime le produit du tableau $basket
-		session()->put("basket", $basket); // On enregistre le panier
-        return back()->withMessage("Produit retiré du panier");
-	}
+    // Vider la panier
+    public function destroy () {
 
-	# Vider le panier
-	public function empty () {
-		session()->forget("basket"); // On supprime le panier en session
-        return back()->withMessage("Panier vidé");
-	}
+    	// Suppression des informations du panier en session
+    	$this->basketRepository->empty();
 
-}
+    	// Redirection vers le panier
+    	return back()->withMessage("Panier vidé");
+
+    }
+
+};
 
 

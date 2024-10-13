@@ -30,14 +30,17 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            @if (Auth::check())
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <!-- Settings and Basket -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
+
+
+                <!-- Settings Dropdown -->
+                @if (Auth::check())
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 <div>
-                                    <!-- Afficher le nom de l'utilisateur depuis le modele user -->
+                                    <!-- Afficher le nom de l'utilisateur depuis le modèle user -->
                                     {{ Auth::user()->user->first_name }}
                                 </div>
 
@@ -67,15 +70,22 @@
                             </form>
                         </x-slot>
                     </x-dropdown>
-                </div>
-            @else
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
-                    <p>Invité(e)</p>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">@lang('Register-you')</a>
-                    @endif
-                </div>
-            @endif
+                @else
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <p>Invité(e)</p>
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">@lang('Register-you')</a>
+                        @endif
+                    </div>
+                @endif
+
+                <!-- Basket Link -->
+                <x-nav-link :href="route('basket.index')">
+                    <img src="{{ asset('images/panier.png') }}" alt="Basket" class="h-6 w-6 mr-2" />
+                    {{ __('Basket') }}
+                </x-nav-link>
+            </div>
+
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -102,15 +112,14 @@
             <div>
                 @if (Auth::check())
                     <!-- Si l'utilisateur est connecté, affiche ses informations -->
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->user->tel }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->user->email }}</div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->tel }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 @else
                     <!-- Si l'utilisateur n'est pas connecté, affiche 'invité' ou d'autres informations pour les invités -->
                     <div class="font-medium text-base text-gray-800">invité</div>
                     <div class="font-medium text-sm text-gray-500">Aucune adresse email</div>
                 @endif
             </div>
-
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">

@@ -8,8 +8,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                @if(isset($user))
-                    <li>Bienvenue,{{ $user->first_name }}</li>
+                @if(Auth::check())
+                    <li>Bienvenue, {{ Auth::user()->user->first_name }}</li>
                 @else
                     <li>Bienvenue, invité</li>
                 @endif

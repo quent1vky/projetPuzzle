@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
+
 return [
 
     /*
@@ -167,9 +168,11 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        //App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        App\Providers\BasketServiceProvider::class
     ])->toArray(),
 
     /*
@@ -189,10 +192,8 @@ return [
 
 
 
-    'providers' => [
-        // ...,
-        // Le service provider du panier
-        App\Providers\BasketServiceProvider::class
-    ],
+
+
+
 
 ];

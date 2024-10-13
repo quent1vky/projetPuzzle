@@ -5,43 +5,35 @@
         </h2>
     </x-slot>
 
-    <x-puzzles-card>
-        <h3 class="font-semibold text-xl text-gray-800"> @lang('Name') </h3>
-        <p>{{ $puzzle->nom }}</p>
+    <div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg flex justify-between items-start">
+        <!-- Section de gauche : description -->
+        <div class="w-1/2">
+            <h1 class="text-3xl font-bold text-gray-800">{{ $puzzle->nom }}</h1>
+            <h2 class="text-xl text-gray-400">Sous-titre</h2> <!-- Tu peux remplacer par un champ réel -->
 
-        <h3 class="font-semibold text-xl text-gray-800 pt-2"> @lang('Category') </h3>
-        <p>{{ $puzzle->categorie->libelle }}</p>
+            <p class="text-gray-700 mt-4">{{ $puzzle->description }}</p>
 
-        <h3 class="font-semibold text-xl text-gray-800 pt-2"> @lang('Description') </h3>
-        <p>{{ $puzzle->description }}</p>
-
-        <h3 class="font-semibold text-xl text-gray-800 pt-2"> @lang('Image') </h3>
-        @if ($puzzle->path_image)
-            <img src={{ asset($puzzle->path_image) }} alt="" style="max-width: 200px;">
-        @else
-            <p>@lang('No image available')</p>
-        @endif
-
-        <h3 class="font-semibold text-xl text-gray-800 pt-2"> @lang('Price') </h3>
-        <p>{{ $puzzle->prix }} €</p>
-
-        <h3 class="font-semibold text-xl text-gray-800 pt-2"> @lang('Date création') </h3>
-        <p>{{ $puzzle->created_at->format('d/m/Y') }}</p>
-
-        @if ($puzzle->created_at != $puzzle->updated_at)
-            <h3 class="font-semibold text-xl text-gray-800 pt-2"> @lang('Last update') </h3>
-            <p>{{ $puzzle->updated_at->format('d/m/Y') }}</p>
-        @endif
-
-        <form action="" method="post">
-            <div class="flex items-center justify-end mt-4">
-                <x-primary-button class="ml-3">
-                    @lang('Add to Basket')
-                </x-primary-button>
+            <div class="mt-4 text-lg font-bold text-gray-900">
+                {{ $puzzle->prix }} €
             </div>
-        </form>
 
-    </x-puzzles-card>
+            <!-- Bouton d'ajout au panier -->
+            <form method="POST" action="{{ route('basket.store', $puzzle) }}" class="pt-4">
+                @csrf
+                <input type="number" name="quantity" placeholder="Quantité ?" class="form-input mr-2 border rounded-lg shadow-sm focus:ring focus:ring-opacity-50" min="1" required>
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">+ @lang('Ajouter au panier')</button>
+            </form>
+        </div>
+
+        <!-- Section de droite : image -->
+        <div class="w-1/3">
+            @if ($puzzle->path_image)
+                <img src="{{ asset($puzzle->path_image) }}" alt="{{ $puzzle->nom }}" class="w-full max-w-xs rounded-lg shadow-sm">
+            @else
+                <div class="bg-gray-200 text-gray-500 h-full flex items-center justify-center rounded-lg">
+                    <p>@lang('Aucune image disponible')</p>
+                </div>
+            @endif
+        </div>
+    </div>
 </x-app-layout>
-
-

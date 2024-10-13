@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
 use App\Repositories\BasketInterfaceRepository;
 use App\Repositories\BasketSessionRepository;
+
 
 class BasketServiceProvider extends ServiceProvider
 {
@@ -15,5 +15,4 @@ class BasketServiceProvider extends ServiceProvider
         $this->app->bind(BasketInterfaceRepository::class, BasketSessionRepository::class);
     }
 
-    // ...
-}
+};

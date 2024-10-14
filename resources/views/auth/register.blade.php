@@ -23,6 +23,13 @@
             <x-input-error :messages="$errors->get('age')" class="mt-2" />
         </div>
 
+        <!-- Address -->
+        <div class="mt-4">
+            <x-input-label for="adresse" :value="__('Address')" />
+            <x-text-input id="adresse" class="block mt-1 w-full" type="text" name="adresse" :value="old('adresse')" required autocomplete="street-address" />
+            <x-input-error :messages="$errors->get('adresse')" class="mt-2" />
+        </div>
+
         <!-- Postal Code -->
         <div class="mt-4">
             <x-input-label for="code_postal" :value="__('Postal Code')" />
@@ -30,11 +37,11 @@
             <x-input-error :messages="$errors->get('code_postal')" class="mt-2" />
         </div>
 
-        <!-- Address -->
+        <!-- Ville -->
         <div class="mt-4">
-            <x-input-label for="address" :value="__('Address')" />
-            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" required autocomplete="street-address" />
-            <x-input-error :messages="$errors->get('address')" class="mt-2" />
+            <x-input-label for="ville" :value="__('Town')" />
+            <x-text-input id="ville" class="block mt-1 w-full" type="text" name="ville" :value="old('ville')" required autocomplete="postal-code" />
+            <x-input-error :messages="$errors->get('ville')" class="mt-2" />
         </div>
 
         <!-- Telephone -->

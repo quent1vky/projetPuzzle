@@ -112,7 +112,7 @@
             <div>
                 @if (Auth::check())
                     <!-- Si l'utilisateur est connecté, affiche ses informations -->
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->tel }}</div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->first_name }}</div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 @else
                     <!-- Si l'utilisateur n'est pas connecté, affiche 'invité' ou d'autres informations pour les invités -->

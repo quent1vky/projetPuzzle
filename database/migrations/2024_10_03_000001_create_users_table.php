@@ -13,8 +13,9 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->integer('age');
+            $table->string('adresse');
             $table->string('code_postal');
-            $table->string('address');
+            $table->string('ville');
             $table->string('tel');
             $table->timestamps();
         });

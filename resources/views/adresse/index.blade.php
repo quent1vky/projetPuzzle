@@ -19,7 +19,7 @@
 
             <!-- Adress -->
             <x-input-label for="address" :value="__('Address :')" />
-            <div>{{ Auth::user()->user->address }}</div>
+            <div>{{ Auth::user()->user->adresse }}</div>
 
             <br>
 

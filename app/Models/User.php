@@ -21,16 +21,12 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'age',
+        'adresse',
         'code_postal',
-        'address',
+        'ville',
         'tel',
     ];
 
-    // Méthode pour récupérer l'ID de l'utilisateur
-    public function id()
-    {
-        return $this->id;
-    }
 }
 
 ?>

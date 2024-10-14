@@ -21,7 +21,7 @@
             <form method="POST" action="{{ route('basket.store', $puzzle) }}" class="pt-4">
                 @csrf
                 <input type="number" name="quantity" placeholder="Quantité ?" class="form-input mr-2 border rounded-lg shadow-sm focus:ring focus:ring-opacity-50" min="1" required>
-                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">+ @lang('Ajouter au panier')</button>
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">+ @lang('Add to basket')</button>
             </form>
         </div>
 

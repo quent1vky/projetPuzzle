@@ -6,6 +6,8 @@ use App\Http\Controllers\PuzzleController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\BasketController;
+use App\Http\Controllers\AdresseController;
+
 use App\Models\Puzzle;
 
 
@@ -60,6 +62,20 @@ Route::resource ('puzzles', PuzzleController :: class ) -> middleware('auth');
 
 //gérer toutes les routes de categorie ==> l'utilisateur doit être connecté pour accéder à ces routes
 Route::resource('categories', CategoriesController :: class) -> middleware('auth');
+
+
+
+Route::get('adresse', [AdresseController::class, 'index'])->name('adresse.index');
+// Route pour afficher le formulaire d'édition (GET)
+Route::get('adresse/{id}/edit', [AdresseController::class, 'edit'])->name('adresse.edit');
+// Route pour traiter le formulaire d'édition (POST)
+Route::post('adresse/update', [AdresseController::class, 'update'])->name('adresse.update');
+
+
+//Route::resource ('adresse', AdresseController :: class ) -> middleware('auth');
+
+
+
 
 require __DIR__.'/auth.php';
 

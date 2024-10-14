@@ -25,6 +25,12 @@ class User extends Authenticatable
         'address',
         'tel',
     ];
+
+    // Méthode pour récupérer l'ID de l'utilisateur
+    public function id()
+    {
+        return $this->id;
+    }
 }
 
 ?>

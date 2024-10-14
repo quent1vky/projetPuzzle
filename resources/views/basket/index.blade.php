@@ -75,7 +75,17 @@
         @else
             <div class="bg-red-100 border border-red-500 text-red-700 p-4 rounded mb-4">Aucun produit au panier</div>
         @endif
+
+
+        <form action="{{ route('adresse.index') }}" method="post">
+            @csrf
+            <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                @lang('Passer au paiement')
+            </button>
+        </form>
+
     </div>
+
 
     <pre class="hidden">{{ print_r(session("basket"), true) }}</pre>
 </x-app-layout>

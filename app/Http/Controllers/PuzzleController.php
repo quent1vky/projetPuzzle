@@ -15,7 +15,6 @@ class PuzzleController extends Controller
         return view('puzzles.index', compact('puzzles'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      */

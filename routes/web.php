@@ -63,18 +63,23 @@ Route::resource ('puzzles', PuzzleController :: class ) -> middleware('auth');
 //gérer toutes les routes de categorie ==> l'utilisateur doit être connecté pour accéder à ces routes
 Route::resource('categories', CategoriesController :: class) -> middleware('auth');
 
-
-
+// Route pour afficher toutes les adresses
 Route::get('adresse', [AdresseController::class, 'index'])->name('adresse.index');
+
+// Route pour afficher le formulaire d'ajout d'adresse (GET)
+Route::get('adresse/create', [AdresseController::class, 'create'])->name('adresse.create');
+
+// Route pour traiter le formulaire d'ajout d'adresse (POST)
+Route::post('adresse/store', [AdresseController::class, 'store'])->name('adresse.store');
+
 // Route pour afficher le formulaire d'édition (GET)
 Route::get('adresse/{id}/edit', [AdresseController::class, 'edit'])->name('adresse.edit');
+
 // Route pour traiter le formulaire d'édition (POST)
 Route::post('adresse/update', [AdresseController::class, 'update'])->name('adresse.update');
 
-
-//Route::resource ('adresse', AdresseController :: class ) -> middleware('auth');
-
-
+// Route pour traiter le formulaire d'ajout d'adresse depuis la page index (POST)
+Route::get('/verifier_adresse', [AdresseController::class, 'verifierAdresse'])->name('vA');
 
 
 require __DIR__.'/auth.php';

@@ -14,30 +14,64 @@
             </div>
         @endif
 
-        <form>
-            @csrf
-
-            <!-- Adress -->
-            <x-input-label for="address" :value="__('Address :')" />
-            <div>{{ Auth::user()->user->adresse }}</div>
+            <!-- Adresse de livraison -->
+            <x-input-label for="deliv_adresse" :value="__('Address :')" />
+            <div>
+                @if(Auth::user()->delivery_addresses)
+                    {{ Auth::user()->delivery_addresses->first()->deliv_adresse }}
+                @else
+                    <span>{{ __('No delivery address found') }}</span>
+                @endif
+            </div>
 
             <br>
 
-            <!-- code postal -->
-            <x-input-label for="address" :value="__('Code postal :')" />
-            <div>{{ Auth::user()->user->code_postal }}</div>
+            <!-- Code postal -->
+            <x-input-label for="code_postal" :value="__('Postal Code :')" />
+            <div>
+                @if(Auth::user()->delivery_addresses)
+                    {{ Auth::user()->delivery_addresses->first()->code_postal }}
+                @else
+                    <span>{{ __('No postal code found') }}</span>
+                @endif
+            </div>
 
+            <br>
 
+            <!-- Ville -->
+            <x-input-label for="ville" :value="__('City :')" />
+            <div>
+                @if(Auth::user()->delivery_addresses)
+                    {{ Auth::user()->delivery_addresses->first()->ville }}
+                @else
+                    <span>{{ __('No city found') }}</span>
+                @endif
+            </div>
 
-            <div class="flex items-center justify-end mt-4">
+            <br>
 
-                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                    <a href="{{ route('adresse.edit', Auth::user()->user->id) }}">Edit Address</a>
-                </button>
+            <!-- Adresse de facturation -->
+            <x-input-label for="adresse_facturation" :value="__('Billing Address :')" />
+            <div>
+                @if(Auth::user()->delivery_addresses)
+                    {{ Auth::user()->delivery_addresses->first()->adresse_facturation }}
+                @else
+                    <span>{{ __('No billing address found') }}</span>
+                @endif
             </div>
 
 
 
-        </form>
+            <div class="flex items-center justify-end mt-8">
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow mr-2">
+                    <a href="{{ route('paiement.index') }}">{{__('Payement')}}</a>
+                </button>
+
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                    <a href="{{ route('adresse.edit', Auth::user()->id) }}">{{__('Edit address')}}</a>
+                </button>
+            </div>
+
+
     </x-puzzles-card>
 </x-app-layout>

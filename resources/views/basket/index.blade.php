@@ -77,7 +77,7 @@
         @endif
 
 
-        <form action="{{ route('adresse.index') }}" method="post">
+        <form action="{{ route('vA') }}" method="GET">
             @csrf
             <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
                 @lang('Passer au paiement')

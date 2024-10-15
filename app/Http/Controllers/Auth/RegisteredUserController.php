@@ -35,9 +35,6 @@ class RegisteredUserController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'age' => ['required', 'integer'],
-            'adresse' => ['required', 'string', 'max:255'],
-            'code_postal' => ['required', 'string', 'max:10'],
-            'ville' => ['required', 'string', 'max:255'],
             'tel' => ['required', 'string', 'max:20'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:logins'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -48,9 +45,6 @@ class RegisteredUserController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'age' => $request->age,
-            'adresse' => $request->adresse,
-            'code_postal' => $request->code_postal,
-            'ville' => $request->ville,
             'tel' => $request->tel
         ]);
 

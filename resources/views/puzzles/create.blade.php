@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <form action="{{ route('puzzles.store') }}" method="post">
+        <form action="{{ route('adresse.store') }}" method="post">
             @csrf
 
             <!-- Nom -->

@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Models\Address;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -26,6 +28,12 @@ class User extends Authenticatable
         'ville',
         'tel',
     ];
+
+    // Relation avec les adresses de livraison
+    public function delivery_addresses()
+    {
+        return $this->hasMany(Adresse::class, 'user_id'); // Assurez-vous que 'user_id' est bien la clé étrangère
+    }
 
 }
 

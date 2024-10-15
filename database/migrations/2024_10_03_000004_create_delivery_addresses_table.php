@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('delivery_addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('code_postal', 10);
-            $table->string('tel', 15);
+            $table->string('deliv_adresse');
+            $table->string('ville');
+            $table->string('code_postal');
+            $table->string('adresse_facturation');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

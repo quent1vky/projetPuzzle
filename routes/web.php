@@ -7,6 +7,8 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\AdresseController;
+use App\Http\Controllers\OrderController;
+
 
 use App\Models\Puzzle;
 
@@ -80,6 +82,10 @@ Route::post('adresse/update', [AdresseController::class, 'update'])->name('adres
 
 // Route pour traiter le formulaire d'ajout d'adresse depuis la page index (POST)
 Route::get('/verifier_adresse', [AdresseController::class, 'verifierAdresse'])->name('vA');
+
+
+Route::get ('paiement', [OrderController :: class, 'index'])->name('paiement.index');
+
 
 
 require __DIR__.'/auth.php';

@@ -47,7 +47,7 @@
                                 <td class="py-4 px-2">${{ $item['prix'] }}</td>
                                 <td class="py-4 px-2">
                                     <form method="POST" action="{{ route('basket.store', $puzzles) }}" class="form-inline d-inline-block">
-                                        {{ csrf_field() }}
+                                        @csrf
                                         <input type="number" name="quantity" placeholder="Quantité ?" value="{{ $item['quantity'] }}" class="border border-gray-300 rounded p-1 w-16 mr-2">
                                         <input type="submit" class="bg-blue-500 text-white rounded p-1 hover:bg-blue-600" value="Actualiser" />
                                     </form>

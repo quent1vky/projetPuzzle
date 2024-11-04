@@ -8,9 +8,14 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\AdresseController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
 
 
 use App\Models\Puzzle;
+use App\Models\User;
+use App\Models\Order;
+
+
 
 
 /*
@@ -25,13 +30,8 @@ use App\Models\Puzzle;
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
 // Route du dashboard accessible à tous
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     // Récupérer 4 puzzles
     $puzzles = Puzzle::all();
     if (Auth::check()) {
@@ -47,9 +47,21 @@ Route::get('/dashboard', function () {
             'puzzles' => $puzzles
         ]);
     }
-})->name('dashboard');
+});
 
 
+Route::get('/admin', function () {
+    $orders = Order::all();
+    if (Auth::check() && Auth::user()->role === 'admin') {
+        return view('admin.index', compact('orders'));
+    } else {
+        return redirect()->route('dashboard');
+    }
+})->name('admin.index');
+
+
+Route::get('admin/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
+Route::put('admin/update', [AdminController::class, 'update'])->name('admin.update');
 
 
 Route::middleware('auth')->group(function () {
@@ -65,34 +77,24 @@ Route::resource ('puzzles', PuzzleController :: class ) -> middleware('auth');
 //gérer toutes les routes de categorie ==> l'utilisateur doit être connecté pour accéder à ces routes
 Route::resource('categories', CategoriesController :: class) -> middleware('auth');
 
-// Route pour afficher toutes les adresses
+
+// Les routes de gestion de l'adresse
 Route::get('adresse', [AdresseController::class, 'index'])->name('adresse.index');
-
-// Route pour afficher le formulaire d'ajout d'adresse (GET)
 Route::get('adresse/create', [AdresseController::class, 'create'])->name('adresse.create');
-
-// Route pour traiter le formulaire d'ajout d'adresse (POST)
 Route::post('adresse/store', [AdresseController::class, 'store'])->name('adresse.store');
-
-// Route pour afficher le formulaire d'édition (GET)
 Route::get('adresse/{id}/edit', [AdresseController::class, 'edit'])->name('adresse.edit');
-
-// Route pour traiter le formulaire d'édition (POST)
-Route::post('adresse/update', [AdresseController::class, 'update'])->name('adresse.update');
-
-// Route pour traiter le formulaire d'ajout d'adresse depuis la page index (POST)
+Route::put('adresse/update', [AdresseController::class, 'update'])->name('adresse.update');
 Route::get('/verifier_adresse', [AdresseController::class, 'verifierAdresse'])->name('vA');
 
-
-Route::get ('paiement', [OrderController :: class, 'index'])->name('paiement.index');
-
-
-
-require __DIR__.'/auth.php';
+// Les routes de gestion du paiement
+Route::get ('paiement', [OrderController::class, 'index'])->name('paiement.index');
+Route::get ('paiement/methode', [OrderController::class, 'methode'])->name('paiement.methode');
+Route::post('paiement/store', [OrderController::class, 'store'])->name('p.store');
+Route::get ('paiement/transaction', [OrderController::class, 'transaction'])->name('paiement.transaction');
 
 
 //gérer la route pour generer le pdf (l'utilisateur doit être connecté)
-Route::get('pdf', [PDFController::class, 'generatePDF']) -> middleware('auth');
+Route::get('pdf', [PDFController::class, 'generatePDF']) -> middleware('auth') -> name('pdf');
 
 
 // Les routes de gestion du panier
@@ -100,6 +102,9 @@ Route::get('/basket', [BasketController::class, 'index'])->name('basket.index');
 Route::post('basket/store/{puzzle}', [BasketController::class, 'store'])->name('basket.store');
 Route::get('basket/edit/{puzzle}', [BasketController::class, 'edit'])->name('basket.edit');
 Route::get('basket/destroy', [BasketController::class, 'destroy'])->name('basket.destroy');
+
+
+require __DIR__.'/auth.php';
 
 
 

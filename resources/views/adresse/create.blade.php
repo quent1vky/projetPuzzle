@@ -19,32 +19,33 @@
 
             <!-- Adresse -->
             <div>
-                <x-input-label for="deliv_adresse" :value="__('adresse')" />
-                <x-text-input id="deliv_adresse" class="block mt-1 w-full" type="text" name="deliv_adresse" required/>
+                <x-input-label for="deliv_adresse" :value="__('Adresse')" />
+                <x-text-input id="deliv_adresse" class="block mt-1 w-full" type="text" name="deliv_adresse"/>
             </div>
 
             <br>
 
             <!-- Ville -->
             <div>
-                <x-input-label for="ville" :value="__('Town')" /> <!-- Assurez-vous que l'ID est unique -->
-                <x-text-input id="ville" class="block mt-1 w-full" type="text" name="ville" required/> <!-- Changer le name ici -->
+                <x-input-label for="ville" :value="__('Ville')" />
+                <x-text-input id="ville" class="block mt-1 w-full" type="text" name="ville"/>
             </div>
 
             <br>
 
             <!-- Code postal -->
             <div>
-                <x-input-label for="code_postal" :value="__('code postal')" /> <!-- Assurez-vous que l'ID est unique -->
-                <x-text-input id="code_postal" class="block mt-1 w-full" type="text" name="code_postal" required/> <!-- Changer le name ici -->
+                <x-input-label for="code_postal" :value="__('Code postal')" />
+                <x-text-input id="code_postal" class="block mt-1 w-full" type="text" name="code_postal"/>
             </div>
 
             <br>
 
-            <!-- Adresse de facturation -->
+
+            <!-- Adresse facturation -->
             <div>
-                <x-input-label for="adresse_facturation" :value="__('Adresse facturation')" /> <!-- Assurez-vous que l'ID est unique -->
-                <x-text-input id="adresse_facturation" class="block mt-1 w-full" type="text" name="adresse_facturation" required/> <!-- Changer le name ici -->
+                <x-input-label for="adresse_facturation" :value="__('Adresse de facturation')" />
+                <x-text-input id="adresse_facturation" class="block mt-1 w-full" type="text" name="adresse_facturation"/>
             </div>
 
 

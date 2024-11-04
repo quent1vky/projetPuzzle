@@ -14,51 +14,40 @@
             </div>
         @endif
 
-            <!-- Adresse de livraison -->
-            <x-input-label for="deliv_adresse" :value="__('Address :')" />
+
+
+
+        <x-input-label for="deliv_adresse" :value="__('Address :')" />
             <div>
-                @if(Auth::user()->delivery_addresses)
-                    {{ Auth::user()->delivery_addresses->first()->deliv_adresse }}
-                @else
-                    <span>{{ __('No delivery address found') }}</span>
-                @endif
+                <p>{{ $adresse->deliv_adresse }}</p>
             </div>
 
-            <br>
+        <br>
 
-            <!-- Code postal -->
-            <x-input-label for="code_postal" :value="__('Postal Code :')" />
-            <div>
-                @if(Auth::user()->delivery_addresses)
-                    {{ Auth::user()->delivery_addresses->first()->code_postal }}
-                @else
-                    <span>{{ __('No postal code found') }}</span>
-                @endif
-            </div>
+        <!-- Code postal -->
+        <x-input-label for="code_postal" :value="__('Code postal :')" />
+        <div>
+            <p>{{ $adresse->code_postal }}</p>
+        </div>
 
-            <br>
+        <br>
 
-            <!-- Ville -->
-            <x-input-label for="ville" :value="__('City :')" />
-            <div>
-                @if(Auth::user()->delivery_addresses)
-                    {{ Auth::user()->delivery_addresses->first()->ville }}
-                @else
-                    <span>{{ __('No city found') }}</span>
-                @endif
-            </div>
+        <!-- Ville -->
+        <x-input-label for="ville" :value="__('Ville :')" />
+        <div>
+            <p>{{ $adresse->ville ?? 'Aucune ville trouvée.' }}</p>
+        </div>
 
-            <br>
+        <br>
 
-            <!-- Adresse de facturation -->
-            <x-input-label for="adresse_facturation" :value="__('Billing Address :')" />
-            <div>
-                @if(Auth::user()->delivery_addresses)
-                    {{ Auth::user()->delivery_addresses->first()->adresse_facturation }}
-                @else
-                    <span>{{ __('No billing address found') }}</span>
-                @endif
-            </div>
+        <!-- Adresse facturation -->
+        <x-input-label for="adresse_facturation" :value="__('Adresse de facturation :')" />
+        <div>
+            <p>{{ $adresse->adresse_facturation ?? 'Aucune adresse de facturation trouvée.' }}</p>
+        </div>
+
+        <br>
+
 
 
 

@@ -7,6 +7,7 @@ use App\Models\Adresse;
 use App\Models\User;
 
 
+
 // importer la façade Auth pour modifier la table user
 use Illuminate\Support\Facades\Auth;
 
@@ -15,14 +16,19 @@ class AdresseController extends Controller
 {
     public function index()
     {
-        $deliveryAddresses = Auth::user()->delivery_addresses; // Récupérer toutes les adresses de livraison de l'utilisateur
-        return view('adresse.index', compact('deliveryAddresses'));
+        // Récupérer les adresses de l'utilisateur connecté uniquement
+        $adresse = Adresse::where('user_id', auth()->user()->id)->first();
+        // Retourner la vue avec les adresses
+        return view('adresse.index', compact('adresse'));
     }
 
 
     public function edit()
     {
-        return view('adresse.edit');
+        // Récupérer les adresses de l'utilisateur connecté uniquement
+        $adresse = Adresse::where('user_id', auth()->user()->id)->first();
+        // Retourner la vue avec les adresses
+        return view('adresse.edit', compact('adresse'));
     }
 
     public function create()
@@ -34,8 +40,9 @@ class AdresseController extends Controller
     {
         $data = $request->validate([
             'deliv_adresse' => 'required|string|max:255',
-            'code_postal' => 'required|max:10',
             'ville' => 'required|string|max:255',
+            'code_postal' => 'required|numeric|digits_between:4,10',
+            'adresse_facturation' => 'required|string|max:255',
         ]);
 
 
@@ -55,30 +62,36 @@ class AdresseController extends Controller
     {
         $data = $request->validate([
             'deliv_adresse' => 'required|string|max:255',
-            'code_postal' => 'required|string|max:10',
             'ville' => 'required|string|max:255',
+            'code_postal' => 'required|numeric|digits_between:4,10',
+            'adresse_facturation' => 'required|string|max:255',
         ]);
 
-        $adresse = Auth::user()->delivery_addresses;
+        // Récupère l'adresse de livraison de l'utilisateur connecté
+        $adresse = Adresse::where('user_id', auth()->user()->id)->first();
 
         // Mettre à jour les informations de l'utilisateur
-        $adresse->deliv_adresse = $data['deliv_adresse']; // Utilisez $data pour récupérer l'adresse validée
-        $adresse->code_postal = $data['code_postal']; // Utilisez $data pour récupérer le code postal validé
-        $adresse->ville = $data['ville']; // Utilisez $data pour récupérer la ville
+        $adresse->deliv_adresse = $request->deliv_adresse; // Utilisez $data pour récupérer l'adresse validée
+        $adresse->ville = $request->ville; // Utilisez $data pour récupérer la ville
+        $adresse->code_postal = $request->code_postal; // Utilisez $data pour récupérer le code postal validé
+        $adresse->adresse_facturation = $request->adresse_facturation; // Utilisez $data pour récupérer l'adresse factu
+        $adresse->user_id = Auth::id();
         $adresse->save();
 
-        return back()->with('message', "L'adresse a bien été mise à jour !");
+        return redirect()->route('adresse.index')->with('message', "L'adresse a bien été mise à jour !");
     }
 
     public function verifierAdresse()
     {
-    // Vérifie si l'utilisateur a une adresse de livraison
-        if (Auth::user()->delivery_addresses) {
-        // Redirige vers index.php si l'utilisateur a une adresse
-            return redirect()->route('adresse.index');
-        } else {
-        // Redirige vers adresse.store si l'utilisateur n'a pas d'adresse
+        // Récupère l'adresse de livraison de l'utilisateur connecté
+        $adresse = Adresse::where('user_id', auth()->user()->id)->first();
+
+        if (is_null($adresse)) {
+            // Redirige vers la page de création d'adresse si aucune adresse n'est trouvée
             return redirect()->route('adresse.create');
+        } else {
+            // Redirige vers la page index des adresses si une adresse existe
+            return redirect()->route('adresse.index');
         }
     }
 

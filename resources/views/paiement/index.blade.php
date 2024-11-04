@@ -46,5 +46,9 @@
         @else
             <div class="bg-red-100 border border-red-500 text-red-700 p-4 rounded mb-4">Aucun produit dans le panier</div>
         @endif
+
+        <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
+            <a href="{{ route('paiement.methode') }}">{{__('Choose a payment method')}}</a>
+        </button>
     </div>
 </x-app-layout>

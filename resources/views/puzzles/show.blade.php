@@ -1,39 +1,46 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-2xl font-bold text-gray-800 leading-tight">
             {{ $puzzle->nom }}
         </h2>
     </x-slot>
 
-    <div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg flex justify-between items-start">
-        <!-- Section de gauche : description -->
-        <div class="w-1/2">
-            <h1 class="text-3xl font-bold text-gray-800">{{ $puzzle->nom }}</h1>
-            <h2 class="text-xl text-gray-400">Sous-titre</h2> <!-- Tu peux remplacer par un champ réel -->
+    <div class="flex justify-center pt-12">
+        <div class="max-w-4xl w-full p-8 bg-white shadow-lg rounded-lg flex flex-col lg:flex-row items-start space-y-8 lg:space-y-0 lg:space-x-10">
+            <!-- Section de gauche : Description du puzzle -->
+            <div class="lg:w-2/3">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ $puzzle->nom }}</h1>
+                <p class="text-gray-600 leading-relaxed mb-6">
+                    <span class="font-semibold text-lg">@lang('Description'):</span> {{ $puzzle->description }}
+                </p>
 
-            <p class="text-gray-700 mt-4">{{ $puzzle->description }}</p>
+                <div class="text-lg font-bold text-gray-900 mb-6">
+                    {{ $puzzle->prix }} €
+                </div>
 
-            <div class="mt-4 text-lg font-bold text-gray-900">
-                {{ $puzzle->prix }} €
+                <!-- Formulaire pour ajouter au panier -->
+                <form method="POST" action="{{ route('basket.store', $puzzle) }}" class="space-y-4">
+                    @csrf
+                    <div class="flex items-center space-x-3">
+                        <input type="number" name="quantity" placeholder="@lang('Quantité ?')" class="w-16 text-center border border-gray-300 rounded-full shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-200" min="1" required>
+                        <button type="submit" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 hover:from-purple-600 hover:via-pink-500 hover:to-red-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
+                            @lang('Ajouter au panier')
+                        </button>
+
+                    </div>
+                </form>
             </div>
 
-            <!-- Bouton d'ajout au panier -->
-            <form method="POST" action="{{ route('basket.store', $puzzle) }}" class="pt-4">
-                @csrf
-                <input type="number" name="quantity" placeholder="Quantité ?" class="form-input mr-2 border rounded-lg shadow-sm focus:ring focus:ring-opacity-50" min="1" required>
-                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">+ @lang('Add to basket')</button>
-            </form>
-        </div>
-
-        <!-- Section de droite : image -->
-        <div class="w-1/3">
-            @if ($puzzle->path_image)
-                <img src="{{ asset($puzzle->path_image) }}" alt="{{ $puzzle->nom }}" class="w-full max-w-xs rounded-lg shadow-sm">
-            @else
-                <div class="bg-gray-200 text-gray-500 h-full flex items-center justify-center rounded-lg">
-                    <p>@lang('Aucune image disponible')</p>
-                </div>
-            @endif
+            <!-- Section de droite : Image du puzzle -->
+            <div class="lg:w-1/3">
+                @if ($puzzle->path_image)
+                    <img src="{{ asset($puzzle->path_image) }}" alt="{{ $puzzle->nom }}" class="w-full h-auto max-w-xs rounded-lg shadow-md object-cover">
+                @else
+                    <div class="bg-gray-200 text-gray-500 h-48 flex items-center justify-center rounded-lg shadow-md">
+                        <p>@lang('Aucune image disponible')</p>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 </x-app-layout>

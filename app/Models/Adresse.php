@@ -20,12 +20,4 @@ class Adresse extends Model
         'code_postal',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-
-
-
 }

@@ -47,7 +47,7 @@ Route::get('/', function () {
             'puzzles' => $puzzles
         ]);
     }
-});
+})->name('dashboard');
 
 
 Route::get('/admin', function () {
@@ -63,19 +63,11 @@ Route::get('/admin', function () {
 Route::get('admin/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
 Route::put('admin/update', [AdminController::class, 'update'])->name('admin.update');
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-
 //gérer toutes les routes de puzzle ==> l'utilisateur n'a pas besoin d'être connecté
-Route::resource ('puzzles', PuzzleController :: class ) -> middleware('auth');
+Route::resource ('puzzles', PuzzleController :: class );
 
 //gérer toutes les routes de categorie ==> l'utilisateur doit être connecté pour accéder à ces routes
-Route::resource('categories', CategoriesController :: class) -> middleware('auth');
+Route::resource('categories', CategoriesController :: class);
 
 
 // Les routes de gestion de l'adresse
@@ -93,16 +85,21 @@ Route::post('paiement/store', [OrderController::class, 'store'])->name('p.store'
 Route::get ('paiement/transaction', [OrderController::class, 'transaction'])->name('paiement.transaction');
 
 
-//gérer la route pour generer le pdf (l'utilisateur doit être connecté)
-Route::get('pdf', [PDFController::class, 'generatePDF']) -> middleware('auth') -> name('pdf');
-
-
 // Les routes de gestion du panier
 Route::get('/basket', [BasketController::class, 'index'])->name('basket.index');
 Route::post('basket/store/{puzzle}', [BasketController::class, 'store'])->name('basket.store');
 Route::get('basket/edit/{puzzle}', [BasketController::class, 'edit'])->name('basket.edit');
 Route::get('basket/destroy', [BasketController::class, 'destroy'])->name('basket.destroy');
 
+
+//gérer la route pour generer le pdf (l'utilisateur doit être connecté)
+Route::get('pdf', [PDFController::class, 'generatePDF']) -> middleware('auth') -> name('pdf');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 require __DIR__.'/auth.php';
 

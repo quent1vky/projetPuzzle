@@ -62,6 +62,6 @@ class RegisteredUserController extends Controller
         // Connecte l'utilisateur via le modèle Logins
         Auth::login($login);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('/');
     }
 };

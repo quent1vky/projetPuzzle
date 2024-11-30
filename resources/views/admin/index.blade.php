@@ -20,7 +20,7 @@
 
             <div class="flex items-center justify-end mt-4">
                 <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                    <a href="{{ route('admin.edit') }}">{{__('Valider les commandes')}}</a>
+                    <a href="{{ route('admin.edit', ['id' => $o->id]) }}">{{__('Valider les commandes')}}</a>
                 </button>
             </div>
         @endforeach

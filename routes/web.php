@@ -10,7 +10,6 @@ use App\Http\Controllers\AdresseController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 
-
 use App\Models\Puzzle;
 use App\Models\User;
 use App\Models\Order;
@@ -54,8 +53,6 @@ Route::get('/admin', function () {
     $orders = Order::all();
     if (Auth::check() && Auth::user()->role === 'admin') {
         return view('admin.index', compact('orders'));
-    } else {
-        return redirect()->route('dashboard');
     }
 })->name('admin.index');
 

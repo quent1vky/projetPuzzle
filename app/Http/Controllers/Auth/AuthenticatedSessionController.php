@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
         if (Auth::user()->role === 'admin') {
             return redirect()->route('admin.index');
         }
-        return redirect('/');;
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -48,6 +48,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('dashboard');
     }
 }

@@ -14,8 +14,9 @@ class Order extends Model
     protected $fillable = [
         'type_paiement',    // Type de paiement
         'date_commande',    // Date de la commande
-        'articles',          // Articles commandés (tableau)
+        'articles',         // Articles commandés (tableau)
         'total_prix',       // Prix total
-        'methode_paiement',  // Méthode de paiement
+        'methode_paiement', // Méthode de paiement
+        'statut_commande',  //statut de la commande changé par l'admin
     ];
 }

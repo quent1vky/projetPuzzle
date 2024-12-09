@@ -75,7 +75,6 @@ class AdresseController extends Controller
         $adresse->ville = $request->ville; // Utilisez $data pour récupérer la ville
         $adresse->code_postal = $request->code_postal; // Utilisez $data pour récupérer le code postal validé
         $adresse->adresse_facturation = $request->adresse_facturation; // Utilisez $data pour récupérer l'adresse factu
-        $adresse->user_id = Auth::id();
         $adresse->save();
 
         return redirect()->route('adresse.index')->with('message', "L'adresse a bien été mise à jour !");
@@ -83,6 +82,10 @@ class AdresseController extends Controller
 
     public function verifierAdresse()
     {
+        if((auth()->check() == false))
+        {
+            return redirect()->route('adresse.create');
+        }
         // Récupère l'adresse de livraison de l'utilisateur connecté
         $adresse = Adresse::where('user_id', auth()->user()->id)->first();
 

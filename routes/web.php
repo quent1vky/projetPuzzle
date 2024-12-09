@@ -54,11 +54,11 @@ Route::get('/admin', function () {
     if (Auth::check() && Auth::user()->role === 'admin') {
         return view('admin.index', compact('orders'));
     }
-})->name('admin.index');
+})->name('admin-dashboard');
 
 
 Route::get('admin/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
-Route::put('admin/update', [AdminController::class, 'update'])->name('admin.update');
+Route::put('admin/update/{id}', [AdminController::class, 'update'])->name('admin.update');
 
 //gérer toutes les routes de puzzle ==> l'utilisateur n'a pas besoin d'être connecté
 Route::resource ('puzzles', PuzzleController :: class );

@@ -13,10 +13,6 @@
                         {{ __('Accueil') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('puzzles.create')" :active="request()->routeIs('puzzles.create')">
-                        {{ __('Create a puzzle') }}
-                    </x-nav-link>
-
                     <x-nav-link :href="route('puzzles.index')" :active="request()->routeIs('puzzles.index')">
                         {{ __('Puzzles') }}
                     </x-nav-link>
@@ -24,6 +20,18 @@
                     <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
                         {{ __('Categories') }}
                     </x-nav-link>
+
+                    @if (Auth::check() && Auth::user()->role === 'admin')
+
+                    <x-nav-link :href="route('puzzles.create')" :active="request()->routeIs('puzzles.create')">
+                        {{ __('Create a puzzle') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('admin-dashboard')" :active="request()->routeIs('admin-dashboard')">
+                        {{ __('Gestion des commandes') }}
+                    </x-nav-link>
+                    @endif
+
                 </div>
             </div>
 

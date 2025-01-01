@@ -80,6 +80,8 @@ class AdresseController extends Controller
         return redirect()->route('adresse.index')->with('message', "L'adresse a bien été mise à jour !");
     }
 
+
+
     public function verifierAdresse()
     {
         if((auth()->check() == false))

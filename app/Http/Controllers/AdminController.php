@@ -46,7 +46,7 @@ class AdminController extends Controller
         // Sauvegarde de la commande modifiée
         $order->save();
 
-        return redirect()->route('admin.index')->with('message', "Le statut de la commande a été modifié avec succès !");
+        return redirect()->route('admin-dashboard')->with('message', "Le statut de la commande a été modifié avec succès !");
     }
 
 

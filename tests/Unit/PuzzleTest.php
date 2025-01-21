@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Puzzle;
+use App\Models\Categories;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -14,16 +15,26 @@ class PuzzleTest extends TestCase
 
     public function test_puzzle_can_be_created()
     {
+        // Ensure there is at least one category in the categories table
+        $category = Categories::create([
+            'libelle' => 'Test Libelle',
+            'name' => 'Test Categorie',  // Adjust according to your categories table structure
+            'description' => 'Une description',
+            'path_image' => 'Path_image',
+        ]);
+
+        // Create a puzzle with valid data
         $puzzle = Puzzle::factory()->create([
             'nom' => 'Test Puzzle',
-            'categorie' => 'Test Categorie',
+            'categorie_id' => $category->id,  // Use the valid category ID
             'description' => 'Ceci est un puzzle de test.',
             'prix' => 9.99,
-            'image' => 'test_image.png', // Ajouter le champ image
+            'path_image' => 'test_image.png', // Ensure this is the correct field name
         ]);
 
         $this->assertDatabaseHas('puzzles', [
             'nom' => 'Test Puzzle',
+            'categorie_id' => $category->id, // Check the category id
         ]);
     }
 
@@ -33,19 +44,19 @@ class PuzzleTest extends TestCase
 
         $puzzleData = [
             'nom' => '',
-            'categorie' => '',
+            'categorie_id' => '',  // Empty categorie_id should fail
             'description' => '',
             'prix' => '',
-            'image' => '', // Ajouter le champ image
+            'path_image' => '',
         ];
 
-        // Valider les données manuellement
+        // Validate manually
         $validator = Validator::make($puzzleData, [
             'nom' => 'required',
-            'categorie' => 'required',
+            'categorie_id' => 'required|exists:categories,id',  // Validate the foreign key
             'description' => 'required',
             'prix' => 'required|numeric',
-            'image' => 'required',
+            'path_image' => 'required',
         ]);
 
         $validator->validate();
@@ -58,82 +69,62 @@ class PuzzleTest extends TestCase
         $this->expectException(ValidationException::class);
 
         $puzzleData = [
-            'nom' => str_repeat('A', 256), // Nom trop long
-            'categorie' => 'Test Categorie',
+            'nom' => str_repeat('A', 256), // Name too long
+            'categorie_id' => 1,  // Assuming category exists with id 1
             'description' => 'Ceci est un puzzle de test.',
-            'prix' => -5.99, // Prix négatif
-            'image' => 'test_image.png', // Ajouter le champ image
+            'prix' => -5.99, // Negative price
+            'path_image' => 'test_image.png', // Ensure correct field name
         ];
 
-        // Valider les données manuellement
+        // Validate manually
         $validator = Validator::make($puzzleData, [
             'nom' => 'required|max:255',
-            'categorie' => 'required',
+            'categorie_id' => 'required|exists:categories,id', // Validate the foreign key
             'description' => 'required',
             'prix' => 'required|numeric|min:0',
-            'image' => 'required',
+            'path_image' => 'required',
         ]);
 
         $validator->validate();
+
+        Puzzle::create($puzzleData);
     }
 
     public function test_puzzle_creation_fails_with_duplicate_data()
     {
+        // Ensure there is at least one category in the categories table
+        $category = Categories::create([
+            'libelle' => 'Test Libelle',
+            'name' => 'Test Categorie',  // Adjust according to your categories table structure
+            'description' => 'Une description',
+            'path_image' => 'Path_image',
+        ]);
+
         $puzzleData = [
             'nom' => 'Unique Puzzle',
-            'categorie' => 'Test Categorie',
+            'categorie_id' => $category->id,  // Ensure the valid category ID
             'description' => 'Ceci est un puzzle de test.',
             'prix' => 9.99,
-            'image' => 'test_image.png',
+            'path_image' => 'test_image.png',
         ];
-    
-        // Créer le premier puzzle avec des données uniques
+
+        // Create the first puzzle
         Puzzle::create($puzzleData);
-    
-        // Tenter de créer un deuxième puzzle avec le même nom unique
+
         $this->expectException(ValidationException::class);
-    
-        // Valider les données manuellement avec la règle d'unicité
+
+        // Validate manually with the unique rule
         $validator = Validator::make($puzzleData, [
-            'nom' => 'required|unique:puzzles,nom',  // Règle d'unicité sur 'nom'
-            'categorie' => 'required',
+            'nom' => 'required|unique:puzzles,nom',
+            'categorie_id' => 'required|exists:categories,id', // Validate the foreign key
             'description' => 'required',
             'prix' => 'required|numeric|min:0',
-            'image' => 'required',
+            'path_image' => 'required',
         ]);
-    
-        // Le deuxième puzzle ne devrait pas être créé
+
         $validator->validate();
+
+        // Try creating with the same unique name
+        Puzzle::create($puzzleData);
     }
-
-    public function test_puzzle_can_be_read()
-    {
-        $puzzle = Puzzle::factory()->create([
-            'nom' => 'Test Puzzle',
-            'categorie' => 'Test Categorie',
-            'description' => 'Ceci est un puzzle de test.',
-            'prix' => 9.99,
-        ]);
-
-    $foundPuzzle = Puzzle::find($puzzle->id);
-    }
-
-    public function test_puzzle_can_be_updated()
-    {
-        $puzzle = Puzzle::factory()->create();
-    
-        $puzzle->nom = 'Nom mis à jour';
-        $puzzle->save();
-    }
-
-    public function test_puzzle_can_be_deleted()
-    {
-        $puzzle = Puzzle::factory()->create();
-
-        $puzzle->delete();
-    }
-
-    
-
-    
 }

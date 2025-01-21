@@ -1,5 +1,6 @@
+/* Formulaire de paiement */
+
 function toggleForm(formId) {
-    console.log("Toggle form called for: " + formId); // Pour le débogage
 
     // Cacher tous les formulaires
     const forms = document.querySelectorAll('.hidden');

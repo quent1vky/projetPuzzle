@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Puzzle;
-use App\Models\Categories;
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -16,7 +16,7 @@ class PuzzleTest extends TestCase
     public function test_puzzle_can_be_created()
     {
         // Ensure there is at least one category in the categories table
-        $category = Categories::create([
+        $category = Category::create([
             'libelle' => 'Test Libelle',
             'name' => 'Test Categorie',  // Adjust according to your categories table structure
             'description' => 'Une description',

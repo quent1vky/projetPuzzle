@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Categories;
+use App\Models\Category;
 //On utilise le modèle puzzle pour recuperer les puzzle et afficher leur spécificités depuis la vue catégories.show
 use App\Models\Puzzle;
 
@@ -9,14 +9,14 @@ use App\Models\Puzzle;
 
 use Illuminate\Http\Request;
 
-class CategoriesController extends Controller
+class CategoryController extends Controller
 {
         /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $cat = Categories::all();
+        $cat = Category::all();
         return view('categories.index', compact('cat'));
     }
 
@@ -26,7 +26,7 @@ class CategoriesController extends Controller
     public function show($idCat)
     {
         // Récupère la catégorie avec ses puzzles
-        $categorie = Categories::with('puzzles')->find($idCat);
+        $categorie = Category::with('puzzles')->find($idCat);
         $puzzles = Puzzle::all();
 
         // Renvoie les puzzles associés à cette catégorie à la vue

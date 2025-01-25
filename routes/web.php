@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PuzzleController;
 use App\Http\Controllers\PDFController;
-use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\AdresseController;
 use App\Http\Controllers\OrderController;
@@ -64,7 +64,7 @@ Route::put('admin/update', [AdminController::class, 'update'])->name('admin.upda
 Route::resource ('puzzles', PuzzleController :: class );
 
 //gérer toutes les routes de categorie ==> l'utilisateur doit être connecté pour accéder à ces routes
-Route::resource('categories', CategoriesController :: class);
+Route::resource('categories', CategoryController :: class);
 
 
 // Les routes de gestion de l'adresse

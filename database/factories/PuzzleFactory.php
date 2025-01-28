@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Categories; // Importer le modèle Category pour créer des relations
+use App\Models\Category; // Importer le modèle Category pour créer des relations
 use App\Models\Puzzle;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,10 +27,10 @@ class PuzzleFactory extends Factory
     {
         return [
             'nom' => $this->faker->word,
-            'categorie_id' => Category::factory(), // Crée une catégorie associée
             'description' => $this->faker->sentence,
-            'prix' => $this->faker->randomFloat(2, 1, 100),
             'path_image' => $this->faker->imageUrl(640, 480, 'puzzle', true),
+            'prix' => $this->faker->randomFloat(2, 1, 100),           
+            'categorie_id' => Category::factory(), // Crée une catégorie associée
         ];
     }
 }

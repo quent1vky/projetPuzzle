@@ -5,25 +5,37 @@
         </h2>
     </x-slot>
 
-
-    <ul>
-        @foreach ($orders as $o)
-            <li>
-                ID Commande: {{ $o->id }}<br>
-                ID client: {{ $o->user_id }}<br>
-                Type de Paiement: {{ $o->total_prix }}€<br>
-                Date de Commande: {{ $o->date_commande }}<br>
-                Prix: {{ $o->total_prix }}€<br>
-                Statut de Commande:{{ $o->statut_commande }}<br>
-            </li>
-            <br>
-
-            <div class="flex items-center justify-end mt-4">
-                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                    <a href="{{ route('admin.edit', ['id' => $o->id]) }}">{{__('Valider les commandes')}}</a>
-                </button>
-            </div>
-        @endforeach
-    </ul>
-
+    <!-- Tableau des commandes -->
+    <div class="overflow-x-auto mt-6">
+        <table class="min-w-full table-auto border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="px-4 py-2 text-left border border-gray-300">{{ __('ID Commande') }}</th>
+                    <th class="px-4 py-2 text-left border border-gray-300">{{ __('ID Client') }}</th>
+                    <th class="px-4 py-2 text-left border border-gray-300">{{ __('Type de Paiement') }}</th>
+                    <th class="px-4 py-2 text-left border border-gray-300">{{ __('Date de Commande') }}</th>
+                    <th class="px-4 py-2 text-left border border-gray-300">{{ __('Prix') }}</th>
+                    <th class="px-4 py-2 text-left border border-gray-300">{{ __('Statut de Commande') }}</th>
+                    <th class="px-4 py-2 text-left border border-gray-300">{{ __('Actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($orders as $o)
+                    <tr>
+                        <td class="px-4 py-2 border border-gray-300">{{ $o->id }}</td>
+                        <td class="px-4 py-2 border border-gray-300">{{ $o->user_id }}</td>
+                        <td class="px-4 py-2 border border-gray-300">{{ $o->type_paiement }}</td>
+                        <td class="px-4 py-2 border border-gray-300">{{ $o->date_commande }}</td>
+                        <td class="px-4 py-2 border border-gray-300">{{ $o->total_prix }}€</td>
+                        <td class="px-4 py-2 border border-gray-300">{{ $o->statut_commande }}</td>
+                        <td class="px-4 py-2 border border-gray-300">
+                            <a href="{{ route('admin.edit', ['id' => $o->id]) }}" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                                {{ __('Valider') }}
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </x-app-layout>

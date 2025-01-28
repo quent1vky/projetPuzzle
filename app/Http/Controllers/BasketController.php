@@ -81,7 +81,7 @@ class BasketController extends Controller
             session()->forget('basket');
         }
 
-        return redirect()->route('basket.index')->with('message', 'Panier vidé.');
+        return redirect()->route('basket.index');
     }
 }
 

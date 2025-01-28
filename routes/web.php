@@ -90,7 +90,7 @@ Route::get ('paiement/transaction', [OrderController::class, 'transaction'])->na
 Route::get('/basket', [BasketController::class, 'index'])->name('basket.index');
 Route::post('/basket/{puzzle}', [BasketController::class, 'store'])->name('basket.store');
 Route::delete('/basket/{puzzle}', [BasketController::class, 'destroy'])->name('basket.destroy');
-Route::delete('/basket-clear', [BasketController::class, 'clear'])->name('basket.clear');
+Route::post('/basket-clear', [BasketController::class, 'clear'])->name('basket.clear');
 
 
 //gérer la route pour generer le pdf (l'utilisateur doit être connecté)

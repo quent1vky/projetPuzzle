@@ -84,24 +84,27 @@
                 </table>
             </div>
 
-            <!-- Formulaire pour vider le panier -->
-            <form action="{{ route('basket.clear') }}" method="POST">
-                @csrf
-                <button class="bg-red-500 hover:bg-red-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                    Vider le panier
-                </button>
-            </form>
+            <div class="flex space-x-4 mt-4">
+                <!-- Bouton pour passer au paiement -->
+                <form action="{{ route('vA') }}" method="GET">
+                    <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                        @lang('Passer au paiement')
+                    </button>
+                </form>
+
+                <!-- Formulaire pour vider le panier -->
+                <form action="{{ route('basket.clear') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="bg-red-500 hover:bg-red-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                        Vider le panier
+                    </button>
+                </form>
+            </div>
         @else
             <div class="bg-red-100 border border-red-500 text-red-700 p-4 rounded mb-4">
                 Votre panier est vide.
             </div>
         @endif
 
-        <!-- Bouton pour passer au paiement -->
-        <form action="{{ route('vA') }}" method="GET">
-            <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow mt-4">
-                @lang('Passer au paiement')
-            </button>
-        </form>
     </div>
 </x-app-layout>

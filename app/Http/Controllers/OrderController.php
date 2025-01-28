@@ -86,7 +86,7 @@ class OrderController extends Controller
             $order->articles = json_encode($articles); // Encodage JSON des articles
             $order->total_prix = $total;
             $order->methode_paiement = $data['methode_paiement'];
-            $order->statut_commande = 'en_attente'; // Statut initial de la commande
+            //$order->statut_commande = ''; // Statut initial de la commande
             $order->user_id = Auth::id(); // ID de l'utilisateur connecté
 
             // Sauvegarder la commande dans la base de données

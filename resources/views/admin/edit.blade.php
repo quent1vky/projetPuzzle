@@ -5,46 +5,96 @@
         </h2>
     </x-slot>
 
-    <ul>
-        <li>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-6">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <form action="{{ route('admin.update') }}" method="post">
                 @csrf
                 @method('PUT') <!-- Using the PUT method for updating -->
 
-                <p><strong>ID:</strong> {{ $orders->id }}</p>
-                <p><strong>Type de Paiement:</strong> {{ $orders->type_paiement }}</p>
-                <input type="hidden" name="type_paiement" value="{{ $orders->type_paiement }}">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Détails
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Informations
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- ID -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <strong>ID:</strong>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $order->id }}
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                            </td>
+                        </tr>
+                        <!-- Type de Paiement -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <strong>Type de Paiement:</strong>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $order->type_paiement }}
+                                <input type="hidden" name="type_paiement" value="{{ $order->type_paiement }}">
+                            </td>
+                        </tr>
+                        <!-- Date de Commande -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <strong>Date de Commande:</strong>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $order->date_commande }}
+                                <input type="hidden" name="date_commande" value="{{ $order->date_commande }}">
+                            </td>
+                        </tr>
+                        <!-- Prix -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <strong>Prix:</strong>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $order->total_prix }}€
+                                <input type="hidden" name="total_prix" value="{{ $order->total_prix }}">
+                            </td>
+                        </tr>
+                        <!-- Statut Commande -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <strong>Statut Commande:</strong>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <x-input-label for="statut_commande_{{ $order->id }}" :value="__('Statut Commande')" />
+                                <select id="statut_commande_{{ $order->id }}" name="statut_commande" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                                    <option value="en_attente" {{ $order->statut_commande == 'en_attente' ? 'selected' : '' }}>
+                                        {{ __('En attente') }}
+                                    </option>
+                                    <option value="validé" {{ $order->statut_commande == 'validé' ? 'selected' : '' }}>
+                                        {{ __('Validé') }}
+                                    </option>
+                                    <option value="annulée" {{ $order->statut_commande == 'annulée' ? 'selected' : '' }}>
+                                        {{ __('Annulée') }}
+                                    </option>
+                                </select>
+                            </td>
+                            <input type="hidden" name="user_id" value="{{Auth::id()}}">
+                        </tr>
+                    </tbody>
+                </table>
 
-                <p><strong>Date de Commande:</strong> {{ $orders->date_commande }}</p>
-                <input type="hidden" name="date_commande" value="{{ $orders->date_commande }}">
+                <div class="flex justify-end mt-10 mb-8 ml-8 mr-8">
+                    <button type="submit" class="bg-green-500 hover:bg-green-400 text-white font-semibold py-2 px-6 rounded-lg shadow">
+                        {{ __('Confirmer les modifications') }}
+                    </button>
+                </div>
 
-                <input type="hidden" name="articles" value="{{ $orders->articles }}">
 
-                <p><strong>Prix:</strong> {{ $orders->total_prix }}€</p>
-                <input type="hidden" name="total_prix" value="{{ $orders->total_prix }}">
-
-                <input type="hidden" name="methode_paiement" value="{{ $orders->methode_paiement }}">
-
-                <x-input-label for="statut_commande_{{ $orders->id }}" :value="__('Statut Commande')" />
-                <select id="statut_commande_{{ $orders->id }}" name="statut_commande" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
-                    <option value="en_attente" {{ $orders->statut_commande == 'en_attente' ? 'selected' : '' }}>
-                        {{ __('En attente') }}
-                    </option>
-                    <option value="en_cours" {{ $orders->statut_commande == 'en_cours' ? 'selected' : '' }}>
-                        {{ __('En cours') }}
-                    </option>
-                    <option value="livrée" {{ $orders->statut_commande == 'livrée' ? 'selected' : '' }}>
-                        {{ __('Livrée') }}
-                    </option>
-                    <option value="annulée" {{ $orders->statut_commande == 'annulée' ? 'selected' : '' }}>
-                        {{ __('Annulée') }}
-                    </option>
-                </select>
-
-                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow mt-2">
-                    {{ __('Valider les modifications') }}
-                </button>
             </form>
-        </li>
-    </ul>
+        </div>
+    </div>
 </x-app-layout>

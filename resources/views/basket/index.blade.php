@@ -6,13 +6,15 @@
     </x-slot>
 
     <div class="container mx-auto p-4">
+        <!-- Affichage des messages de session -->
         @if (session()->has('message'))
             <div class="bg-blue-100 border border-blue-500 text-blue-700 p-4 rounded mb-4">
                 {{ session('message') }}
             </div>
         @endif
 
-        @if (session()->has("basket"))
+        <!-- Vérification si le panier contient des articles -->
+        @if (count($basket) > 0)
             <h1 class="text-2xl font-bold mb-4">Mon panier</h1>
             <div class="overflow-x-auto shadow-lg rounded-lg border border-gray-200 mb-4">
                 <table class="min-w-full bg-white">
@@ -26,66 +28,80 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 text-sm font-light">
-                        <!-- Initialisation du total général à 0 -->
-                        @php $total = 0 @endphp
+                        @php $total = 0; @endphp <!-- Initialisation du total général -->
 
-                        <!-- On parcourt les produits du panier en session : session('basket') -->
-                        @foreach (session("basket") as $puzzles => $item)
-                            <!-- On incrémente le total général par le total de chaque produit du panier -->
-                            @php $total += $item['prix'] * $item['quantity'] @endphp
+                        <!-- Parcourir les articles du panier -->
+                        @foreach ($basket as $puzzleId => $puzzles)
+                            @php
+                                $nom = $puzzles['puzzle']['nom'];
+                                $prix = $puzzles['puzzle']['prix'];
+                                $quantity = $puzzles['quantity'];
+                                $total += $prix * $quantity;
+                            @endphp
                             <tr class="border-b hover:bg-gray-100">
                                 <td class="py-4 px-2 flex items-center">
-                                    @if (isset($item['path_image']))
+                                    @if (isset($puzzles['puzzle']['path_image']))
                                         <div class="flex flex-col items-center">
-                                            <img src="{{ asset($item['path_image']) }}" alt="{{ $item['nom'] }}" class="h-20 w-20 object-cover rounded mb-1">
-                                            <span class="text-center text-gray-800">{{ $item['nom'] }}</span>
+                                            <img src="{{ asset($puzzles['puzzle']['path_image']) }}"
+                                                 alt="{{ $nom }}"
+                                                 class="h-20 w-20 object-cover rounded mb-1">
+                                            <span class="text-center text-gray-800">{{ $nom }}</span>
                                         </div>
                                     @else
                                         <p>@lang('No image available')</p>
                                     @endif
                                 </td>
-                                <td class="py-4 px-2">${{ $item['prix'] }}</td>
+                                <td class="py-4 px-2">{{ number_format($prix, 2) }} €</td>
                                 <td class="py-4 px-2">
-                                    <form method="POST" action="{{ route('basket.store', $puzzles) }}" class="form-inline d-inline-block">
+                                    <form action="{{ route('basket.store', $puzzles['puzzle']['id']) }}" method="POST">
                                         @csrf
-                                        <input type="number" name="quantity" placeholder="Quantité ?" value="{{ $item['quantity'] }}" class="border border-gray-300 rounded p-1 w-16 mr-2">
-                                        <input type="submit" class="bg-blue-500 text-white rounded p-1 hover:bg-blue-600" value="Actualiser" />
+                                        <input type="number"
+                                               name="quantity"
+                                               value="{{ $quantity }}"
+                                               class="border border-gray-300 rounded p-1 w-16 mr-2">
+                                        <button type="submit" class="bg-blue-500 text-white rounded p-1 hover:bg-blue-600">
+                                            Actualiser
+                                        </button>
                                     </form>
                                 </td>
-                                <td class="py-4 px-2">${{ $item['prix'] * $item['quantity'] }}</td>
+                                <td class="py-4 px-2">{{ number_format($prix * $quantity, 2) }}€</td>
                                 <td class="py-4 px-2">
-                                    <a href="{{ route('basket.edit', $puzzles) }}" class="bg-red-500 text-white rounded p-1 hover:bg-red-600" title="Retirer le produit du panier">Retirer</a>
+                                    <form method="POST" action="{{ route('basket.destroy', $puzzles['puzzle']['id']) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="bg-red-500 text-white rounded p-1 hover:bg-red-600">
+                                            Retirer
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
                         <tr class="font-bold">
                             <td colspan="4" class="py-4 px-2 text-left">Total général</td>
-                            <td class="py-4 px-2">${{ $total }}</td>
+                            <td class="py-4 px-2">{{ number_format($total, 2) }}€</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Lien pour vider le panier -->
-            <form id="basket-destroy-form" action="{{ route('basket.destroy') }}" method="POST" style="display: none;">
+            <!-- Formulaire pour vider le panier -->
+            <form action="{{ route('basket.clear') }}" method="POST">
                 @csrf
-                @method('DELETE')
+                <button class="bg-red-500 hover:bg-red-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                    Vider le panier
+                </button>
             </form>
-
         @else
-            <div class="bg-red-100 border border-red-500 text-red-700 p-4 rounded mb-4">Aucun produit au panier</div>
+            <div class="bg-red-100 border border-red-500 text-red-700 p-4 rounded mb-4">
+                Votre panier est vide.
+            </div>
         @endif
 
-
+        <!-- Bouton pour passer au paiement -->
         <form action="{{ route('vA') }}" method="GET">
-            @csrf
-            <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
+            <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow mt-4">
                 @lang('Passer au paiement')
             </button>
         </form>
-
     </div>
-
-
-    <pre class="hidden">{{ print_r(session("basket"), true) }}</pre>
 </x-app-layout>

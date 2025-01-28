@@ -5,6 +5,13 @@
         </h2>
     </x-slot>
 
+    <!-- Affichage des messages de session -->
+    @if (session()->has('message'))
+        <div class="bg-blue-100 border border-blue-500 text-blue-700 p-4 rounded mb-4">
+            {{ session('message') }}
+        </div>
+    @endif
+
     <div class="flex justify-center pt-12">
         <div class="max-w-4xl w-full p-8 bg-white shadow-lg rounded-lg flex flex-col lg:flex-row items-start space-y-8 lg:space-y-0 lg:space-x-10">
             <!-- Section de gauche : Description du puzzle -->

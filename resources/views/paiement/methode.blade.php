@@ -15,7 +15,7 @@
             </button>
 
             <div id="carte-form" class="hidden mt-4">
-                <form action="{{ route('p.store') }}" method="POST">
+                <form action="{{ route('paiement.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="type_paiement" value="carte-bancaire"> <!-- Champ caché pour type de paiement -->
                     <input type="hidden" name="date_commande" value="{{ now()->format('Y-m-d') }}">
@@ -55,7 +55,7 @@
             </button>
 
             <div id="paypal-form" class="hidden mt-4">
-                <form action="{{ route('p.store') }}" method="POST">
+                <form action="{{ route('paiement.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="type_paiement" value="paypal"> <!-- Champ caché pour type de paiement -->
                     <input type="hidden" name="date_commande" value="{{ now()->format('Y_m-d') }}">
@@ -80,7 +80,7 @@
             </button>
 
             <div id="cheque-form" class="hidden mt-4">
-                <form action="{{ route('p.store') }}" method="POST">
+                <form action="{{ route('paiement.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="type_paiement" value="cheque"> <!-- Champ caché pour type de paiement -->
                     <input type="hidden" name="date_commande" value="{{ now()->format('Y_m-d') }}">

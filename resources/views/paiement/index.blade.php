@@ -19,26 +19,44 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 text-sm font-light">
-                        @foreach ($basket as $item)
+
+                        @php
+                            $totalP = 0;
+                        @endphp
+
+                        @foreach ($basket as $puzzleId => $puzzles)
+                            @php
+                                $nom = $puzzles['puzzle']['nom'] ?? 'Nom indisponible';  // Récupérer le nom du puzzle
+                                $prix = $puzzles['puzzle']['prix'] ?? 0;  // Récupérer le prix du puzzle
+                                $quantity = $puzzles['quantity'] ?? 1;  // Récupérer la quantité
+                                $total = $prix * $quantity;  // Calculer le total pour cet article
+                                $imagePath = $puzzles['puzzle']['path_image'] ?? null; // Récupérer l'image
+                                $totalP += $prix * $quantity;
+                            @endphp
                             <tr class="border-b hover:bg-gray-100">
                                 <td class="py-4 px-2 flex items-center">
-                                    @if (isset($item['path_image']))
+                                    @if ($imagePath)
                                         <div class="flex flex-col items-center">
-                                            <img src="{{ asset($item['path_image']) }}" alt="{{ $item['nom'] }}" class="h-20 w-20 object-cover rounded mb-1">
-                                            <span class="text-center text-gray-800">{{ $item['nom'] }}</span>
+                                            <img src="{{ asset($imagePath) }}" alt="{{ $nom }}" class="h-20 w-20 object-cover rounded mb-1">
+                                            <span class="text-center text-gray-800">{{ $nom }}</span>
                                         </div>
                                     @else
                                         <p>@lang('No image available')</p>
                                     @endif
                                 </td>
-                                <td class="py-4 px-2">${{ $item['prix'] }}</td>
-                                <td class="py-4 px-2">{{ $item['quantity'] }}</td>
-                                <td class="py-4 px-2">${{ $item['prix'] * $item['quantity'] }}</td>
+                                <td class="py-4 px-2">{{ number_format($prix, 2) }} €</td>
+                                <td class="py-4 px-2">{{ $quantity }}</td>
+                                <td class="py-4 px-2">{{ number_format($total, 2) }} €</td>
                             </tr>
                         @endforeach
+
                         <tr class="font-bold">
-                            <td colspan="3" class="py-4 px-2 text-left">Total général</td>
-                            <td class="py-4 px-2">${{ $total }}</td>
+                        <td colspan="3" class="py-4 px-2 text-left">Total général</td>
+                        <td class="py-4 px-2">{{ $totalP }} €</td>
+
+
+
+
                         </tr>
                     </tbody>
                 </table>

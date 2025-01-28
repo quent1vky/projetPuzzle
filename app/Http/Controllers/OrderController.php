@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Order_products;
+use App\Models\Puzzle;
+use App\Models\Basket;
+
 // importer la façade Auth pour modifier la table user
 use Illuminate\Support\Facades\Auth;
 
@@ -14,21 +17,25 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $basket = session('basket');
-        $total = 0;
-
-        if ($basket) {
+        if (auth()->check()) {
+            // Utilisateur connecté
+            $basket = Basket::with('puzzle')->where('user_id', auth()->id())->get();
+            // Récupérer les puzzles manuellement pour chaque panier
             foreach ($basket as $item) {
-                $total += $item['prix'] * $item['quantity'];
+                $item->puzzle = $item->puzzle;  // Charger la relation "puzzle" pour chaque panier
             }
+        } else {
+            // Utilisateur non connecté
+            $basket = session()->get('basket', []);
         }
-
-        return view('paiement.index', compact('basket', 'total'));
+        return view('paiement.index', compact('basket'));
     }
+
+
 
     public function transaction()
     {
-        return redirect()->route('pdf');
+        return redirect()->route('paiement.transaction');
     }
 
     public function methode()
@@ -38,45 +45,64 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+        // Vérifier que l'utilisateur est connecté
+        if (!Auth::check()) {
+            return back()->withErrors('Vous devez être connecté pour passer une commande.');
+        }
 
-        // On récupère la session basket
-        $basket = session('basket');
+        // Récupérer les articles dans le panier pour cet utilisateur
+        $basketItems = Basket::with('puzzle')->where('user_id', Auth::id())->get();
+
+        // Vérifier si le panier est vide
+        if ($basketItems->isEmpty()) {
+            return back()->withErrors('Votre panier est vide.');
+        }
+
+        // Calculer le total et préparer les articles
         $total = 0;
         $articles = [];
 
-        if ($basket) {
-            foreach ($basket as $item) {
-                $total += $item['prix'] * $item['quantity'];
-                $articles[] = [
-                    'nom' => $item['nom'],
-                    'prix' => $item['prix'],
-                    'quantity' => $item['quantity'],
-                ];
-            }
+        foreach ($basketItems as $item) {
+            $total += $item->puzzle->prix * $item->quantity; // Calcul du prix total
+            $articles[] = [
+                'puzzle_id' => $item->puzzle->id,
+                'nom' => $item->puzzle->nom,
+                'prix' => $item->puzzle->prix,
+                'quantity' => $item->quantity,
+            ];
         }
 
+        // Valider les données de la commande
         $data = $request->validate([
             'type_paiement' => 'required|string|max:255',
-            'date_commande' => 'required|string|max:255',
             'methode_paiement' => 'required|string|max:255',
         ]);
 
         try {
-            // Création d'une commande
+            // Créer une nouvelle commande
             $order = new Order();
-            $order->type_paiement = $request->type_paiement;
-            $order->date_commande = $request->date_commande;
-            $order->articles = json_encode($articles); // Convertir le tableau en JSON
+            $order->type_paiement = $data['type_paiement'];
+            $order->date_commande = now(); // Date de la commande
+            $order->articles = json_encode($articles); // Encodage JSON des articles
             $order->total_prix = $total;
-            $order->methode_paiement = $request->methode_paiement;
-            $order->user_id = Auth::id();
+            $order->methode_paiement = $data['methode_paiement'];
+            $order->statut_commande = 'en_attente'; // Statut initial de la commande
+            $order->user_id = Auth::id(); // ID de l'utilisateur connecté
 
+            // Sauvegarder la commande dans la base de données
             $order->save();
 
+            // Supprimer les articles du panier après la création de la commande
+            Basket::where('user_id', Auth::id())->delete();
 
-            return redirect()->route('paiement.transaction')->with('message', "La commande a bien été ajoutée !");
+            // Rediriger vers une page de confirmation ou de paiement
+            return redirect()->route('pdf')->with('message', 'La commande a été enregistrée avec succès !');
         } catch (\Exception $e) {
             return back()->withErrors('Erreur lors de la sauvegarde de la commande : ' . $e->getMessage());
         }
     }
+
+
+
+
 }

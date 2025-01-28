@@ -1,18 +1,22 @@
 <?php
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PuzzleController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\BasketController;
 use App\Http\Controllers\AdresseController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BasketController;
+
+
 
 use App\Models\Puzzle;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Basket;
 
 
 
@@ -75,18 +79,18 @@ Route::get('adresse/{id}/edit', [AdresseController::class, 'edit'])->name('adres
 Route::put('adresse/update', [AdresseController::class, 'update'])->name('adresse.update');
 Route::get('/verifier_adresse', [AdresseController::class, 'verifierAdresse'])->name('vA');
 
+
 // Les routes de gestion du paiement
 Route::get ('paiement', [OrderController::class, 'index'])->name('paiement.index');
 Route::get ('paiement/methode', [OrderController::class, 'methode'])->name('paiement.methode');
-Route::post('paiement/store', [OrderController::class, 'store'])->name('p.store');
+Route::post('paiement/store', [OrderController::class, 'store'])->name('paiement.store');
 Route::get ('paiement/transaction', [OrderController::class, 'transaction'])->name('paiement.transaction');
 
 
-// Les routes de gestion du panier
 Route::get('/basket', [BasketController::class, 'index'])->name('basket.index');
-Route::post('basket/store/{puzzle}', [BasketController::class, 'store'])->name('basket.store');
-Route::get('basket/edit/{puzzle}', [BasketController::class, 'edit'])->name('basket.edit');
-Route::get('basket/destroy', [BasketController::class, 'destroy'])->name('basket.destroy');
+Route::post('/basket/{puzzle}', [BasketController::class, 'store'])->name('basket.store');
+Route::delete('/basket/{puzzle}', [BasketController::class, 'destroy'])->name('basket.destroy');
+Route::delete('/basket-clear', [BasketController::class, 'clear'])->name('basket.clear');
 
 
 //gérer la route pour generer le pdf (l'utilisateur doit être connecté)

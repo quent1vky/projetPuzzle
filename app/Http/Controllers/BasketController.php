@@ -67,7 +67,7 @@ class BasketController extends Controller
             session()->put('basket', $basket);
         }
 
-        return redirect()->route('basket.index')->with('message', 'Produit retiré du panier.');
+        return redirect()->route('basket.index');
     }
 
     // Vider le panier

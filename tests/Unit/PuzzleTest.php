@@ -36,5 +36,34 @@ class PuzzleTest extends TestCase
             'categorie_id' => $category->id,
         ]);
     }
+
+    
+    public function test_store_creates_a_puzzle_fails()
+    {
+        // Crée une catégorie avec une factory
+        $category = Category::factory()->create();
+    
+        // Simule une requête POST avec des données invalides
+        $response = $this->post(route('puzzles.store'), [
+            'nom' => '',  // Champ vide, devrait déclencher une erreur
+            'description' => 'Description test',
+            'path_image' => 'image.png',
+            'prix' => 19.99,
+            'categorie_id' => $category->id,
+        ]);
+    
+        // Vérifie que la réponse contient des erreurs de validation
+        $response->assertSessionHasErrors(['nom']);
+    
+        // Vérifie que le puzzle n'a PAS été inséré en base de données
+        $this->assertDatabaseMissing('puzzles', [
+            'description' => 'Description test',
+            'path_image' => 'image.png',
+            'prix' => 19.99,
+            'categorie_id' => $category->id,
+        ]);
+    }
+    
+    
 }
 

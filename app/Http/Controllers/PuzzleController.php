@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Puzzle;
+use App\Models\Category;
 
 class PuzzleController extends Controller
 {
@@ -20,7 +21,8 @@ class PuzzleController extends Controller
      */
     public function create()
     {
-        return view('puzzles.create');
+        $categories = Category::all();
+        return view('puzzles.create', compact('categories'));
     }
 
     /**

@@ -47,7 +47,11 @@
             <!-- categorie -->
             <div>
                 <x-input-label for="categorie_id" :value="__('categorie')" />
-                <x-text-input id="categorie_id" class="block mt-1 w-full" type="text" name="categorie_id" :value="old('categorie_id')" required autofocus />
+                <select id="categorie_id" name="categorie_id" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                    @foreach($categories as $c)
+                        <option value="{{$c->id}}">{{ $c->libelle }}</option>
+                    @endforeach
+                </select>
                 <x-input-error :messages="$errors->get('categorie_id')" class="mt-2" />
             </div>
 

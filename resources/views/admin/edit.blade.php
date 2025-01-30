@@ -5,11 +5,18 @@
         </h2>
     </x-slot>
 
+    @php
+        $articles = json_decode($order->articles, true); // Decode le JSON en tableau associatif
+    @endphp
+
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-6">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <form action="{{ route('admin.update') }}" method="post">
                 @csrf
-                @method('PUT') <!-- Using the PUT method for updating -->
+                @method('PUT') <!-- method PUT pour mettre à jour le statut -->
+
+                <!-- ajoute un champ caché pour que l'ID de la commande soit bien envoyé avec la requête -->
+                <input type="hidden" name="order_id" value="{{ $order->id }}">
 
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
@@ -30,7 +37,6 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $order->id }}
-                                <input type="hidden" name="order_id" value="{{ $order->id }}">
                             </td>
                         </tr>
                         <!-- Type de Paiement -->
@@ -40,7 +46,6 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $order->type_paiement }}
-                                <input type="hidden" name="type_paiement" value="{{ $order->type_paiement }}">
                             </td>
                         </tr>
                         <!-- Date de Commande -->
@@ -50,7 +55,32 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $order->date_commande }}
-                                <input type="hidden" name="date_commande" value="{{ $order->date_commande }}">
+                            </td>
+                        </tr>
+                        <!-- articles -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <strong>articles:</strong>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                @if(is_array($articles))
+
+                                    <ul class="list-disc">
+
+                                        @foreach($articles as $article)
+
+                                            <li class="list-disc">{{ $article['nom'] }} : {{ $article['prix']}}€</li>
+
+                                        @endforeach
+
+                                    </ul>
+
+                                @endif
+
+                                @php
+                                    $articles_json = json_encode($articles);
+                                @endphp
+
                             </td>
                         </tr>
                         <!-- Prix -->
@@ -60,7 +90,15 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $order->total_prix }}€
-                                <input type="hidden" name="total_prix" value="{{ $order->total_prix }}">
+                            </td>
+                        </tr>
+                        <!-- Methode paiement -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <strong>Méthode de paiement:</strong>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $order->methode_paiement }}
                             </td>
                         </tr>
                         <!-- Statut Commande -->
@@ -71,21 +109,21 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <x-input-label for="statut_commande_{{ $order->id }}" :value="__('Statut Commande')" />
                                 <select id="statut_commande_{{ $order->id }}" name="statut_commande" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
-                                    <option value="en_attente" {{ $order->statut_commande == 'en_attente' ? 'selected' : '' }}>
+                                    <option value="0">
                                         {{ __('En attente') }}
                                     </option>
-                                    <option value="validé" {{ $order->statut_commande == 'validé' ? 'selected' : '' }}>
+                                    <option type="option" value="1">
                                         {{ __('Validé') }}
                                     </option>
-                                    <option value="annulée" {{ $order->statut_commande == 'annulée' ? 'selected' : '' }}>
+                                    <option value="2">
                                         {{ __('Annulée') }}
                                     </option>
                                 </select>
                             </td>
-                            <input type="hidden" name="user_id" value="{{Auth::id()}}">
                         </tr>
                     </tbody>
                 </table>
+
 
                 <div class="flex justify-end mt-10 mb-8 ml-8 mr-8">
                     <button type="submit" class="bg-green-500 hover:bg-green-400 text-white font-semibold py-2 px-6 rounded-lg shadow">

@@ -28,7 +28,7 @@ class AdminController extends Controller
         // Validation des données du formulaire
         $data = $request->validate([
             'type_paiement' => 'required|string|max:255',
-            'date_commande' => 'required|date', // Attention ici : tu as écrit `date_commandes` dans ta validation mais le champ dans la base de données est `date_commande`
+            'date_commande' => 'required|date',
             'articles' => 'required|string',
             'total_prix' => 'required|numeric',
             'methode_paiement' => 'required|string|max:255',

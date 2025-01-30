@@ -63,7 +63,7 @@ class AdresseController extends Controller
         $data = $request->validate([
             'deliv_adresse' => 'required|string|max:255',
             'ville' => 'required|string|max:255',
-            'code_postal' => 'required|numeric|digits_between:4,10',
+            'code_postal' => 'required|numeric|regex:/^\d{5}$/',
             'adresse_facturation' => 'required|string|max:255',
         ]);
 

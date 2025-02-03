@@ -6,6 +6,9 @@ namespace App\Http\Controllers;
 use App\Models\Puzzle; // Assure-toi que Puzzle est aussi importé
 use App\Models\Basket; // Importation du modèle Basket
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+
 
 
 class BasketController extends Controller
@@ -36,7 +39,7 @@ class BasketController extends Controller
         if (auth()->check()) {
             // Utilisateur connecté : Enregistrer dans la base de données
             $basketItem = Basket::updateOrCreate(
-                ['user_id' => auth()->id(), 'puzzle_id' => $puzzle->id],
+                ['user_id' => Auth::id(), 'puzzle_id' => $puzzle->id],
                 ['quantity' => $quantity]
             );
         } else {

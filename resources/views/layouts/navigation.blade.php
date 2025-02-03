@@ -26,6 +26,10 @@
                             {{ __('Create a puzzle') }}
                         </x-nav-link>
 
+                        <x-nav-link :href="route('categories.create')" :active="request()->routeIs('categories.create')">
+                            {{ __('Create a category') }}
+                        </x-nav-link>
+
                         <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
                             {{ __('Orders management') }}
                         </x-nav-link>

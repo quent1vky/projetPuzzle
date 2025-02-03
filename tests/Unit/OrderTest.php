@@ -22,19 +22,18 @@ class OrderTest extends TestCase
         $user = User::factory()->create();
 
         // Act: Perform a POST request to the store route
-        $response = $this->post(route('p.store'), [
+        $response = $this->post(route('paiement.store'), [
             'type_paiement' => 'Credit Card',
             'date_commande' => now()->toDateString(), // Ensure correct date format
-            'articles' => json_encode([
+            'articles' => [
                 ['id' => 1, 'name' => 'Puzzle 1', 'quantity' => 2],
                 ['id' => 2, 'name' => 'Puzzle 2', 'quantity' => 1],
-            ]),
+            ],
             'total_prix' => 50.00,
             'methode_paiement' => 'Stripe',
-            'statut_commande' => 'le statut lalala',
+            'statut_commande' => 0,
             'user_id' => $user->id,
         ]);
-
 
         // Assert that the articles are correctly stored as a JSON
         $order = Order::latest()->first();

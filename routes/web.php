@@ -64,10 +64,11 @@ Route::get('/admin', function () {
 Route::get('admin/{id}/edit', [AdminController::class, 'edit'])->name('admin.edit');
 Route::put('admin/update', [AdminController::class, 'update'])->name('admin.update');
 
+
 //gérer toutes les routes de puzzle ==> l'utilisateur n'a pas besoin d'être connecté
 Route::resource ('puzzles', PuzzleController :: class );
 
-//gérer toutes les routes de categorie ==> l'utilisateur doit être connecté pour accéder à ces routes
+//gérer toutes les routes de categorie
 Route::resource('categories', CategoryController :: class);
 
 

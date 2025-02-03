@@ -20,6 +20,36 @@ class CategoryController extends Controller
         return view('categories.index', compact('cat'));
     }
 
+            /**
+     * Display a category form.
+     */
+    public function create()
+    {
+        return view('categories.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+
+        $data = $request->validate([
+            'libelle' => 'required|string|max:255',
+            'description' => 'required|max:500',
+            'path_image' => 'required|max:100',
+        ]);
+
+
+        //Creation du puzzle
+        $category = new Category();
+        $category->libelle = $request->libelle;
+        $category->description = $request->description;
+        $category->path_image = $request->path_image;
+        $category->save();
+        return back()->with('message', "La categorie a bien été crée !");
+    }
+
     /**
      * Display the specified resource.
      */

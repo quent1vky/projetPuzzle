@@ -69,7 +69,7 @@
 
                                         @foreach($articles as $article)
 
-                                            <li class="list-disc">{{ $article['nom'] }} : {{ $article['prix']}}€</li>
+                                            <li class="list-disc">produit : {{ $article['nom'] }} - quantité : {{ $article['quantity']}} - {{ $article['prix']}}€</li>
 
                                         @endforeach
 
@@ -109,13 +109,13 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <x-input-label for="statut_commande_{{ $order->id }}" :value="__('Statut Commande')" />
                                 <select id="statut_commande_{{ $order->id }}" name="statut_commande" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
-                                    <option value="0">
+                                    <option value="0" @if($order->statut_commande == 0) selected @endif>
                                         {{ __('En attente') }}
                                     </option>
-                                    <option type="option" value="1">
+                                    <option value="1" @if($order->statut_commande == 1) selected @endif>
                                         {{ __('Validé') }}
                                     </option>
-                                    <option value="2">
+                                    <option value="2" @if($order->statut_commande == 2) selected @endif>
                                         {{ __('Annulée') }}
                                     </option>
                                 </select>

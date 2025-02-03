@@ -31,16 +31,17 @@
                 @foreach ($orders as $o)
 
                 @php
-                $commande_statut = "";
+                    $commande_statut = "";
 
-                if ($o->statut_commande == 0) {
-                    $commande_statut = "en attente de validation";
-                }if ($o->statut_commande == 1) {
-                    $commande_statut = "commande validée";
-                }else {
-                    $commande_statut = "commande annulée";
-                }
+                    if ($o->statut_commande === 0) {
+                        $commande_statut = "en attente de validation";
+                    } elseif ($o->statut_commande == 1) {
+                        $commande_statut = "commande validée";
+                    } elseif ($o->statut_commande == 2) {
+                        $commande_statut = "commande annulée";
+                    }
                 @endphp
+
                     <tr>
                         <td class="px-4 py-2 border border-gray-300">{{ $o->id }}</td>
                         <td class="px-4 py-2 border border-gray-300">{{ $o->user_id }}</td>

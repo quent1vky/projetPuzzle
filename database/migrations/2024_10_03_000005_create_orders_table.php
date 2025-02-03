@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('articles');
             $table->decimal('total_prix', 10, 2);
             $table->string('methode_paiement', 50);
-            $table->string('statut_commande')->default('0');
+            $table->integer('statut_commande');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

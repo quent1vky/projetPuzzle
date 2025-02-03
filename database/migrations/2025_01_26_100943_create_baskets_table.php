@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('baskets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Pour lier au modèle User
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('puzzle_id')->constrained()->onDelete('cascade'); // Pour lier au modèle Puzzle
             $table->integer('quantity'); // Quantité du produit
             $table->timestamps();

@@ -7,14 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 
 
-
-
 class AdminController extends Controller
 {
 
     public function index()
     {
-        return view('admin.index');
+        return view('admin.index', compact('commande_statut'));
     }
 
     public function edit($id)
@@ -28,15 +26,19 @@ class AdminController extends Controller
     {
         // Vérifie que la requête contient bien un statut
         $request->validate([
-            'statut_commande' => 'required',
+            'statut_commande' => 'required|in:0,1,2',
         ]);
 
         // Récupère la commande à partir de l'ID envoyé
         $order = Order::find($request->order_id);
 
-        if (!$order) {
-            return redirect()->route('admin.index')->with('message', 'Commande introuvable');
+        // Vérifier si la commande existe et si le total_prix est valide (exemple de "corruption")
+        if (!$order || $order->total_prix < 0) {
+            // Si la commande n'existe pas ou si elle est corrompue (prix négatif), retourner un message d'erreur
+            return redirect()->route('admin.index')
+                            ->with('error', 'Commande invalide, mise à jour refusée.');
         }
+
 
         // Met à jour le statut
         $order->statut_commande = $request->statut_commande;
@@ -44,7 +46,6 @@ class AdminController extends Controller
 
         return redirect()->route('admin.index')->with('message', 'Commande mise à jour avec succès');
     }
-
 
 
 }

@@ -19,6 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//genère l'ensemble des routes pour puzzle
+// Crée automatiquement toutes les routes RESTful
+// Applique le middleware api_key à toutes ces routes pour protéger l'accès avec une clé API.
 Route::apiResource('puzzles', PuzzleController::class);
 

@@ -15,6 +15,7 @@ class Puzzle extends Model
         'description',
         'path_image',
         'prix',
+        'stock',
         'categorie_id',
     ];
 

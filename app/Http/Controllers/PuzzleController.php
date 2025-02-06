@@ -36,6 +36,7 @@ class PuzzleController extends Controller
             'description' => 'required|max:500',
             'path_image' => 'required|max:100',
             'prix' => 'required|numeric|between:0,99.99',
+            'stock' => 'required|integer|between:1,1000',
             'categorie_id' => 'required|max:500',
         ]);
 
@@ -46,6 +47,7 @@ class PuzzleController extends Controller
         $puzzle->description = $request->description;
         $puzzle->path_image = $request->path_image;
         $puzzle->prix = $request->prix;
+        $puzzle->stock = $request->stock;
         $puzzle->categorie_id = $request->categorie_id;
         $puzzle->save();
         return back()->with('message', "Le puzzle a bien été crée !");
@@ -78,12 +80,14 @@ class PuzzleController extends Controller
             'description' => 'required|max:500',
             'path_mage' => 'required|max:500',
             'prix' => 'required|numeric|between:0,99.99',
+            'stock' => 'required|integer|between:1,1000',
             'categorie_id' => 'required|exists:categories,id', // Verifier que la catégorie existe
         ]);
         $puzzle->nom = $request->nom;
         $puzzle->description = $request->description;
         $puzzle->path_image = $request->path_image;
         $puzzle->prix = $request->prix;
+        $puzzle->stock = $request->stock;
         $puzzle->categorie_id = $request->categorie_id;
         $puzzle->save();
         return back()->with('message', "Le puzzle a bien été mis à jour !");

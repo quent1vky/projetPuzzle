@@ -58,6 +58,13 @@
                 <x-input-error :messages="$errors->get('prix')" class="mt-2" />
             </div>
 
+            <!-- Stock -->
+            <div>
+                <x-input-label for="stock" :value="__('stock')" />
+                <x-text-input id="stock" class="block mt-1 w-full" type="number" step="0.01" name="stock" :value="old('stock')" required autofocus />
+                <x-input-error :messages="$errors->get('stock')" class="mt-2" />
+            </div>
+
             <div class="flex items-center justify-end mt-4">
                 <x-primary-button class="ml-3">
                     {{ __('Edit') }}

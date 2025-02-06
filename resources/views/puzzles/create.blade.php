@@ -44,6 +44,13 @@
                 <x-input-error :messages="$errors->get('prix')" class="mt-2" />
             </div>
 
+            <!-- Stock -->
+            <div>
+                <x-input-label for="stock" :value="__('stock')" />
+                <x-text-input id="stock" class="block mt-1 w-full" type="number" step="0.01" name="stock" :value="old('stock')" required autofocus />
+                <x-input-error :messages="$errors->get('stock')" class="mt-2" />
+            </div>
+
             <!-- categorie -->
             <div>
                 <x-input-label for="categorie_id" :value="__('categorie')" />

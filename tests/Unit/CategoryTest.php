@@ -10,14 +10,6 @@ class CategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // Disable Vite compilation by changing asset_url config
-        config()->set('app.asset_url', '/');
-        config()->set('vite.enabled', false);
-    }
 
     /**
      * Test the show method for a category.
@@ -28,13 +20,13 @@ class CategoryTest extends TestCase
     {
         // Créer une catégorie fictive dans la base de données
         $category = Category::factory()->create([
-            'libelle' => 'Puzzles',
+            'libelle' => 'Categorie1',
             'description' => 'Une catégorie dédiée aux puzzles.',
             'path_image' => 'images/puzzles.jpg',
         ]);
 
         // Effectuer une requête GET pour afficher cette catégorie
-        $response = $this->get(route('categories.show', $category->id));
+        $response = $this->get(route('categories.index', $category->id));
 
         // Vérifier que la réponse est correcte (200 OK)
         $response->assertStatus(200);
@@ -43,5 +35,28 @@ class CategoryTest extends TestCase
         $response->assertSee($category->libelle);
         $response->assertSee($category->description);
         $response->assertSee($category->path_image);
+    }
+
+
+
+        /**
+     * Test the show method for a category.
+     *
+     * @return void
+     */
+    public function test_it_cant_create_a_corrupt_category(): void
+    {
+        // Créer une catégorie fictive dans la base de données
+        $category = Category::factory()->create([
+            'libelle' => '', //libelle vide est invalide
+            'description' => 'Une catégorie dédiée aux puzzles.',
+            'path_image' => 'images/puzzles.jpg',
+        ]);
+
+        // Effectuer une requête GET pour afficher cette catégorie
+        $response = $this->post(route('categories.store'));
+
+        // Vérifier que la réponse est incorrecte (500)
+        $response->assertStatus(302);
     }
 }

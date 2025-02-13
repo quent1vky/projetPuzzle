@@ -21,6 +21,7 @@ class PuzzleTest extends TestCase
             'description' => 'Description test',
             'path_image' => 'image.png',
             'prix' => 19.99,
+            'stock' => 25,
             'categorie_id' => $category->id,
         ]);
 

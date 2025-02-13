@@ -29,7 +29,8 @@ class PuzzleFactory extends Factory
             'nom' => $this->faker->word,
             'description' => $this->faker->sentence,
             'path_image' => $this->faker->imageUrl(640, 480, 'puzzle', true),
-            'prix' => $this->faker->randomFloat(2, 1, 100),           
+            'prix' => $this->faker->randomFloat(2, 1, 100),   
+            'stock' => $this->faker->numberBetween(1, 100),       
             'categorie_id' => Category::factory(), // Crée une catégorie associée
         ];
     }

@@ -50,7 +50,7 @@ class AdresseTest extends TestCase
         ]);
     }
  
-    public function it_fails_to_update_the_user_address_with_invalid_data()
+    public function test_it_fails_to_update_address():void
     {
         // Créez un utilisateur fictif
         $user = User::factory()->create();
@@ -74,8 +74,7 @@ class AdresseTest extends TestCase
         // Simulez la requête pour mettre à jour l'adresse avec des données invalides
         $response = $this->put(route('adresse.update', $adresse->id), $invalidData);
     
-        // Vérifiez que la réponse renvoie un statut 302 (redirige avec des erreurs) et non 422
-        // En cas de validation échouée, Laravel redirige par défaut vers la page précédente avec les erreurs
+        // Vérifiez que la réponse renvoie un statut 302 (redirige avec des erreurs) ou 422 (erreur de validation)
         $response->assertStatus(302); // Redirection vers la page précédente avec les erreurs
     
         // Vérifiez que les erreurs sont présentes dans la session
@@ -89,11 +88,18 @@ class AdresseTest extends TestCase
         // Vérifiez que l'adresse n'a pas été mise à jour dans la base de données
         $this->assertDatabaseMissing('delivery_addresses', [
             'id' => $adresse->id,
-            'deliv_adresse' => $invalidData['deliv_adresse'], // Doit être vide
-            'ville' => $invalidData['ville'], // Doit être vide
-            'code_postal' => $invalidData['code_postal'], // Doit être invalide
-            'adresse_facturation' => $invalidData['adresse_facturation'], // Doit être vide
+            'deliv_adresse' => '', // Doit être vide
+            'ville' => '', // Doit être vide
+            'code_postal' => 'abc', // Doit être invalide
+            'adresse_facturation' => '', // Doit être vide
+        ]);
+    
+        // Vérifiez que l'adresse originale est toujours présente dans la base de données
+        $this->assertDatabaseHas('delivery_addresses', [
+            'id' => $adresse->id,
+            'deliv_adresse' => $adresse->deliv_adresse, // L'adresse initiale ne doit pas avoir changé
         ]);
     }
+    
     
 }

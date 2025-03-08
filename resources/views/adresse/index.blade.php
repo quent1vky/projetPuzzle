@@ -15,11 +15,11 @@
         @endif
 
 
-
+        @if (auth()->check())
 
         <x-input-label for="deliv_adresse" :value="__('Address :')" />
             <div>
-                <p>{{ $adresse->deliv_adresse }}</p>
+                <p>{{ $adresse->deliv_adresse ?? 'Aucune adresse de livraison'}}</p>
             </div>
 
         <br>
@@ -27,7 +27,7 @@
         <!-- Code postal -->
         <x-input-label for="code_postal" :value="__('Code postal :')" />
         <div>
-            <p>{{ $adresse->code_postal }}</p>
+            <p>{{ $adresse->code_postal ?? 'Aucun code postal.' }}</p>
         </div>
 
         <br>
@@ -46,20 +46,70 @@
             <p>{{ $adresse->adresse_facturation ?? 'Aucune adresse de facturation trouvée.' }}</p>
         </div>
 
+        @else
+            <!-- Utilisateur non connecté, on récupère l'adresse depuis la session -->
+            @if(session()->has('adresse'))
+                <x-input-label for="deliv_adresse" :value="__('Address :')" />
+                <div>
+                    <p>{{ session('adresse')['deliv_adresse'] ?? 'Aucune adresse de livraison' }}</p>
+                </div>
+
+                <br>
+
+                <!-- Code postal -->
+                <x-input-label for="code_postal" :value="__('Code postal :')" />
+                <div>
+                    <p>{{ session('adresse')['code_postal'] ?? 'Aucun code postal.' }}</p>
+                </div>
+
+                <br>
+
+                <!-- Ville -->
+                <x-input-label for="ville" :value="__('Ville :')" />
+                <div>
+                    <p>{{ session('adresse')['ville'] ?? 'Aucune ville trouvée.' }}</p>
+                </div>
+
+                <br>
+
+                <!-- Adresse facturation -->
+                <x-input-label for="adresse_facturation" :value="__('Adresse de facturation :')" />
+                <div>
+                    <p>{{ session('adresse')['adresse_facturation'] ?? 'Aucune adresse de facturation trouvée.' }}</p>
+                </div>
+
+                <br>
+            @else
+                <p>Aucune adresse enregistrée en session.</p>
+            @endif
+        @endif
+
         <br>
 
 
 
-
+        @if (auth()->check())
             <div class="flex items-center justify-end mt-8">
                 <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow mr-2">
-                    <a href="{{ route('paiement.index') }}">{{__('Payement')}}</a>
+                    <a href="{{ route('paiement.index') }}">{{__('Payment')}}</a>
                 </button>
 
                 <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
                     <a href="{{ route('adresse.edit', Auth::user()->id) }}">{{__('Edit address')}}</a>
                 </button>
             </div>
+        @else
+            <!-- Si l'utilisateur n'est pas connecté, vérifier si un ID est stocké en session -->
+            @if(session()->has('user_id'))
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow mr-2">
+                    <a href="{{ route('paiement.index', ['user_id' => session('user_id')]) }}">{{__('Payment')}}</a>
+                </button>
+
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                    <a href="{{ route('adresse.edit', session('user_id')) }}">{{__('Edit address')}}</a>
+                </button>
+            @endif
+        @endif
 
 
     </x-puzzles-card>

@@ -13,10 +13,16 @@ class PDFController extends Controller
     {
         try {
             // Récupérer l'utilisateur connecté
-            $user = Auth::user();
+            if (auth()->check()) {
+                $user = Auth::user();
+                // Récupérer uniquement la dernière commande de l'utilisateur
+                $order = Order::where('user_id', $user->id)->latest()->first();
+            }else{
+                $userId = session('user_id', -1);
+                // Récupérer la dernière commande pour cet utilisateur non connecté
+                $order = Order::where('user_id', $userId)->latest()->first();
+            }
 
-            // Récupérer uniquement la dernière commande de l'utilisateur
-            $order = Order::where('user_id', $user->id)->latest()->first();
 
             // Charger la vue HTML pour la commande
             $html = view('pdf.view', ['order' => $order])->render();

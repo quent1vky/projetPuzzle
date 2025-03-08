@@ -31,18 +31,18 @@
                         @php $total = 0; @endphp <!-- Initialisation du total général -->
 
                         <!-- Parcourir les articles du panier -->
-                        @foreach ($basket as $puzzleId => $puzzles)
+                        @foreach ($basket as $item)
                             @php
-                                $nom = $puzzles['puzzle']['nom'];
-                                $prix = $puzzles['puzzle']['prix'];
-                                $quantity = $puzzles['quantity'];
+                                $nom = $item->puzzle->nom;
+                                $prix = $item->puzzle->prix;
+                                $quantity = $item->quantity;
                                 $total += $prix * $quantity;
                             @endphp
                             <tr class="border-b hover:bg-gray-100">
                                 <td class="py-4 px-2 flex items-center">
-                                    @if (isset($puzzles['puzzle']['path_image']))
+                                    @if (isset($item->puzzle->path_image))
                                         <div class="flex flex-col items-center">
-                                            <img src="{{ asset($puzzles['puzzle']['path_image']) }}"
+                                            <img src="{{ asset($item->puzzle->path_image) }}"
                                                  alt="{{ $nom }}"
                                                  class="h-20 w-20 object-cover rounded mb-1">
                                             <span class="text-center text-gray-800">{{ $nom }}</span>
@@ -53,7 +53,7 @@
                                 </td>
                                 <td class="py-4 px-2">{{ number_format($prix, 2) }} €</td>
                                 <td class="py-4 px-2">
-                                    <form action="{{ route('basket.store', $puzzles['puzzle']['id']) }}" method="POST">
+                                    <form action="{{ route('basket.store', $item->puzzle->id) }}" method="POST">
                                         @csrf
                                         <input type="number"
                                                name="quantity"
@@ -66,7 +66,7 @@
                                 </td>
                                 <td class="py-4 px-2">{{ number_format($prix * $quantity, 2) }}€</td>
                                 <td class="py-4 px-2">
-                                    <form method="POST" action="{{ route('basket.destroy', $puzzles['puzzle']['id']) }}">
+                                    <form method="POST" action="{{ route('basket.destroy', $item->puzzle->id) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button class="bg-red-500 text-white rounded p-1 hover:bg-red-600">

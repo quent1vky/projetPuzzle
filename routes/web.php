@@ -83,7 +83,6 @@ Route::get('/verifier_adresse', [AdresseController::class, 'verifierAdresse'])->
 
 // Les routes de gestion du paiement
 Route::get ('paiement', [OrderController::class, 'index'])->name('paiement.index');
-Route::get ('paiement/methode', [OrderController::class, 'methode'])->name('paiement.methode');
 Route::post('paiement/store', [OrderController::class, 'store'])->name('paiement.store');
 Route::get ('paiement/transaction', [OrderController::class, 'transaction'])->name('paiement.transaction');
 

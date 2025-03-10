@@ -22,7 +22,7 @@ class BasketController extends Controller
             // Utilisateur non connecté : Créer un identifiant utilisateur unique pour la session
             if (!session()->has('user_id')) {
                 // Générer un ID unique pour l'utilisateur non connecté
-                session(['user_id' => -1]);  // L'ID attribué à l'user est -1
+                session(['user_id' => 1]);  // L'ID attribué à l'user est -1
             }
 
             // Utilisateur non connecté : récupérer les éléments du panier depuis la session

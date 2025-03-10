@@ -60,7 +60,7 @@ class OrderController extends Controller
 
     public function transaction()
     {
-        return redirect()->route('paiement.transaction');
+        return view('paiement.transaction');
     }
 
     public function store(Request $request)
@@ -119,20 +119,25 @@ class OrderController extends Controller
                 $order->user_id = Auth::id(); // ID de l'utilisateur connecté
             } else {
                 // Si l'utilisateur n'est pas connecté, on utilise un identifiant unique pour l'anonyme
-                $order->user_id = session('user_id', -1); // ID -1 pour eviter tout conflit
+                $order->user_id = session('user_id', 1); // ID null pour user non connecté
             }
 
             // Sauvegarder la commande dans la base de données
             $order->save();
 
 
-            // Supprimer les articles du panier après la création de la commande
             if (auth()->check()){
                 Basket::where('user_id', Auth::id())->delete();
+            }else{
+                session()->forget('basket');
             }
 
-            // Rediriger vers une page de confirmation ou de paiement
-            return redirect()->route('pdf')->with('message', 'La commande a été enregistrée avec succès !');
+            if (auth()->check()){
+                // Rediriger vers une page de confirmation ou de paiement
+                return redirect()->route('pdf');
+            }else{
+                return redirect()->route('paiement.transaction')->with('message', "La commande a été enregistrée avec succès ! Vous serez redirigé sur la page d'accueil dans 3 secondes");              
+            }
         } catch (\Exception $e) {
             return back()->withErrors('Erreur lors de la sauvegarde de la commande : ' . $e->getMessage());
         }

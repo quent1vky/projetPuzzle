@@ -12,3 +12,4 @@ function toggleForm(formId) {
     const selectedForm = document.getElementById(formId);
     selectedForm.classList.toggle('hidden');
 }
+

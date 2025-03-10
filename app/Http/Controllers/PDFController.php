@@ -18,7 +18,7 @@ class PDFController extends Controller
                 // Récupérer uniquement la dernière commande de l'utilisateur
                 $order = Order::where('user_id', $user->id)->latest()->first();
             }else{
-                $userId = session('user_id', -1);
+                $userId = session('user_id', 1);
                 // Récupérer la dernière commande pour cet utilisateur non connecté
                 $order = Order::where('user_id', $userId)->latest()->first();
             }

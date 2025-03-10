@@ -14,6 +14,17 @@
             </div>
         @endif
 
+        <!-- Message d'erreur global -->
+        @if ($errors->any())
+            <div class="mt-3 mb-4 text-sm text-red-600">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
 
         @if (auth()->check())
 
@@ -98,18 +109,20 @@
                     <a href="{{ route('adresse.edit', Auth::user()->id) }}">{{__('Edit address')}}</a>
                 </button>
             </div>
-        @else
-            <!-- Si l'utilisateur n'est pas connecté, vérifier si un ID est stocké en session -->
-            @if(session()->has('user_id'))
+            @else
+                @php
+                    $userId = session('user_id', 1);  // Récupérer l'ID de l'utilisateur depuis la session
+                @endphp
+                <!-- Si l'utilisateur n'est pas connecté, vérifier si un ID est stocké en session -->
                 <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow mr-2">
-                    <a href="{{ route('paiement.index', ['user_id' => session('user_id')]) }}">{{__('Payment')}}</a>
+                    <a href="{{ route('paiement.index', ['user_id' => $userId]) }}">{{ __('Payment') }}</a>
                 </button>
 
                 <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                    <a href="{{ route('adresse.edit', session('user_id')) }}">{{__('Edit address')}}</a>
+                    <a href="{{ route('adresse.edit', $userId) }}">{{ __('Edit address') }}</a>
                 </button>
             @endif
-        @endif
+
 
 
     </x-puzzles-card>

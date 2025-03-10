@@ -14,6 +14,17 @@
             </div>
         @endif
 
+        <!-- Message d'erreur global -->
+        @if ($errors->any())
+            <div class="mt-3 mb-4 text-sm text-red-600">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
 
         <form action="{{ route('adresse.update') }}" method="POST">
             @csrf

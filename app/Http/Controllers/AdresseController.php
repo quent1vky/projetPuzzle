@@ -22,7 +22,7 @@ class AdresseController extends Controller
         } else {
             if (!session()->has('user_id')) {
                 // Générer un ID unique pour l'utilisateur non connecté
-                session(['user_id' => -1]);  // ID -1 permet d'eviter un potentiel conflit avec un ID deja existant par exemple
+                session(['user_id' => 1]);  // ID d'un utilisateur non connecté à 0
             }
             // Récupérer l'adresse stockée en session
             $adresse = session()->has('adresse') ? [session('adresse')] : [];
@@ -41,7 +41,7 @@ class AdresseController extends Controller
         }else{
             if (!session()->has('user_id')) {
                 // Générer un ID unique pour l'utilisateur non connecté
-                session(['user_id' => -1]);  // ID -1 permet d'eviter un potentiel conflit avec un ID deja existant par exemple
+                session(['user_id' => null]);  // ID d'un utilisateur non connecté à 0
             }
             // Récupérer l'adresse stockée en session
             $adresse = session()->has('adresse') ? [session('adresse')] : [];
@@ -77,8 +77,8 @@ class AdresseController extends Controller
             // Utilisateur non connecté : enregistrer l'adresse en session
             session()->put('adresse', [
                 'deliv_adresse' => $request->deliv_adresse,
-                'ville' => $request->ville,
                 'code_postal' => $request->code_postal,
+                'ville' => $request->ville,
                 'adresse_facturation' => $request->adresse_facturation,
             ]);
         }
@@ -89,10 +89,23 @@ class AdresseController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
+            // Format des champs requis
             'deliv_adresse' => 'required|string|max:255',
             'ville' => 'required|string|max:255',
             'code_postal' => 'required|numeric|regex:/^\d{5}$/',
             'adresse_facturation' => 'required|string|max:255',
+        ], 
+        // Message d'erreur en cas de mauvaises saisies
+        [
+            'deliv_adresse.required' => "L'adresse de livraison est obligatoire.",
+            'deliv_adresse.string' => "L'adresse de livraison doit être une chaîne de caractères.",
+            'ville.required' => "La ville est obligatoire.",
+            'ville.string' => "La ville doit être une chaîne de caractères.",
+            'code_postal.required' => "Le code postal est obligatoire.",
+            'code_postal.numeric' => "Le code postal doit être un nombre.",
+            'code_postal.regex' => "Le code postal doit contenir exactement 5 chiffres.",
+            'adresse_facturation.required' => "L'adresse de facturation est obligatoire.",
+            'adresse_facturation.string' => "L'adresse de facturation doit être une chaîne de caractères.",
         ]);
 
         if (auth()->check()){

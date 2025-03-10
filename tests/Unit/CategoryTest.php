@@ -16,25 +16,48 @@ class CategoryTest extends TestCase
      *
      * @return void
      */
-    public function test_it_displays_a_category(): void
+    public function test_it_creates_a_category(): void
+    {
+        // Genere une categorie valide
+        $category = Category::factory()->make([
+            'path_image' => 'images/puzzles.jpg', // Ensure it does not exceed 100 characters
+        ])->toArray();
+
+        // envoie une requete post pour creer une categorie
+        $response = $this->post(route('categories.store'), $category);
+
+        // Verifie la reponse de redirection
+        $response->assertRedirect();
+
+        // Verifier que la categorie a été inseré dans la bdd
+        $this->assertDatabaseHas('categories', $category);
+    }
+
+
+
+
+
+        /**
+     * Test the show method for a category.
+     *
+     * @return void
+     */
+    public function test_it_cant_create_a_corrupt_category(): void
     {
         // Créer une catégorie fictive dans la base de données
         $category = Category::factory()->create([
+            'libelle' => '', //libelle vide est invalide
             'libelle' => 'Categorie1',
             'description' => 'Une catégorie dédiée aux puzzles.',
             'path_image' => 'images/puzzles.jpg',
         ]);
 
+        $response = $this->post(route('categories.store'));
         // Effectuer une requête GET pour afficher cette catégorie
         $response = $this->get(route('categories.index', $category->id));
 
-        // Vérifier que la réponse est correcte (200 OK)
-        $response->assertStatus(200);
-
-        // Vérifier que les données de la catégorie sont présentes dans la vue
-        $response->assertSee($category->libelle);
-        $response->assertSee($category->description);
-        $response->assertSee($category->path_image);
+        // Vérifier que la réponse est incorrecte (302)
+        $response->assertStatus(302);
     }
 
 

@@ -13,23 +13,40 @@ use Illuminate\Support\Facades\Auth;
 
 class BasketController extends Controller
 {
-    // Afficher le panier
     public function index()
     {
         if (auth()->check()) {
-            // Utilisateur connecté
+            // Utilisateur connecté : récupérer les éléments du panier avec la relation puzzle
             $basket = Basket::with('puzzle')->where('user_id', auth()->id())->get();
-            // Récupérer les puzzles manuellement pour chaque panier
-            foreach ($basket as $item) {
-                $item->puzzle = $item->puzzle;  // Charger la relation "puzzle" pour chaque panier
-            }
         } else {
-            // Utilisateur non connecté
-            $basket = session()->get('basket', []);
+            // Utilisateur non connecté : Créer un identifiant utilisateur unique pour la session
+            if (!session()->has('user_id')) {
+                // Générer un ID unique pour l'utilisateur non connecté
+                session(['user_id' => -1]);  // L'ID attribué à l'user est -1
+            }
+
+            // Utilisateur non connecté : récupérer les éléments du panier depuis la session
+            $basketSession = session()->get('basket', []);
+            $basket = collect(); // Utiliser une collection pour uniformiser
+
+            foreach ($basketSession as $puzzleId => $data) {
+                $basket->push((object) [ // Utiliser ->push() pour créer une collection comme Eloquent
+                    'id' => $puzzleId,
+                    'puzzle' => (object) [
+                        'id' => $puzzleId,
+                        'nom' => $data['nom'],
+                        'prix' => $data['prix'],
+                        'path_image' => $data['path_image'],
+                    ],
+                    'quantity' => $data['quantity']
+                ]);
+            }
         }
 
         return view('basket.index', compact('basket'));
     }
+
+
 
     // Ajouter/Mettre à jour un produit dans le panier
     public function store(Request $request, Puzzle $puzzle)

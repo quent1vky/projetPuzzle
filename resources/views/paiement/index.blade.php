@@ -69,8 +69,6 @@
                         <td class="py-4 px-2">{{ $totalP }} €</td>
 
 
-
-
                         </tr>
                     </tbody>
                 </table>
@@ -98,21 +96,23 @@
                     @csrf
                     <input type="hidden" name="type_paiement" value="carte-bancaire"> <!-- Champ caché pour type de paiement -->
                     <input type="hidden" name="date_commande" value="{{ now()->format('Y-m-d') }}">
-                    <input type="hidden" name="methode_paiement" value="carte-bancaire"> <!-- Champ caché pour type de paiement -->
 
                     <div class="mb-4">
                         <label for="card-number" class="block text-left">Numéro de Carte:</label>
                         <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" class="border border-gray-300 rounded-lg p-2 w-full" maxlength="19" required>
                         <small class="text-gray-500">Format: 1234 5678 9012 3456</small>
+                        <x-input-error :messages="$errors->get('card-number')" class="mt-2" />
                     </div>
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div>
                             <label for="expiration-date" class="block text-left">Date d'Expiration:</label>
                             <input type="text" id="expiration-date" name="expiration-date" placeholder="MM/AA" class="border border-gray-300 rounded-lg p-2 w-full" required>
+                            <x-input-error :messages="$errors->get('expiration-date')" class="mt-2" />
                         </div>
                         <div>
                             <label for="cvv" class="block text-left">CVV:</label>
                             <input type="text" id="cvv" name="cvv" class="border border-gray-300 rounded-lg p-2 w-full" required>
+                            <x-input-error :messages="$errors->get('cvv')" class="mt-2" />
                         </div>
                     </div>
                     <div class="mb-4">
@@ -138,7 +138,6 @@
                     @csrf
                     <input type="hidden" name="type_paiement" value="paypal"> <!-- Champ caché pour type de paiement -->
                     <input type="hidden" name="date_commande" value="{{ now()->format('Y_m-d') }}">
-                    <input type="hidden" name="methode_paiement" value="paypal"> <!-- Champ caché pour type de paiement -->
 
                     <div class="mb-4">
                         <label for="paypal-email" class="block text-left">Email PayPal:</label>
@@ -163,7 +162,6 @@
                     @csrf
                     <input type="hidden" name="type_paiement" value="cheque"> <!-- Champ caché pour type de paiement -->
                     <input type="hidden" name="date_commande" value="{{ now()->format('Y_m-d') }}">
-                    <input type="hidden" name="methode_paiement" value="cheque"> <!-- Champ caché pour type de paiement -->
 
                     <div class="mb-4">
                         <label for="cheque-name" class="block text-left">Nom du Titulaire du Chèque:</label>

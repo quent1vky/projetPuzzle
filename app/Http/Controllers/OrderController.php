@@ -102,7 +102,6 @@ class OrderController extends Controller
         // Valider les données de la commande
         $data = $request->validate([
             'type_paiement' => 'required|string|max:255',
-            'methode_paiement' => 'required|string|max:255',
         ]);
 
         try {
@@ -112,7 +111,6 @@ class OrderController extends Controller
             $order->date_commande = now(); // Date de la commande
             $order->articles = json_encode($articles); // Encodage JSON des articles
             $order->total_prix = $total;
-            $order->methode_paiement = $data['methode_paiement'];
             $order->statut_commande = 0; // Statut par défaut : en attente
             // Si l'utilisateur est connecté, on utilise son ID
             if (auth()->check()) {

@@ -12,8 +12,6 @@
         </div>
     @endif
 
-    <
-
     <!-- Script de redirection après un délai -->
     <script>
         // Fonction de redirection avec délai

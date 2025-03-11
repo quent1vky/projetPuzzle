@@ -7,12 +7,7 @@
 
 
     <x-puzzles-card>
-        <!-- Message de réussite -->
-        @if (session()->has('message'))
-            <div class="mt-3 mb-4 list-disc list-inside text-sm text-green-600">
-                {{ session('message') }}
-            </div>
-        @endif
+
 
         <form action="{{ route('adresse.store') }}" method="post">
             @csrf
@@ -21,6 +16,7 @@
             <div>
                 <x-input-label for="deliv_adresse" :value="__('Adresse')" />
                 <x-text-input id="deliv_adresse" class="block mt-1 w-full" type="text" name="deliv_adresse"/>
+                <x-input-error :messages="$errors->get('deliv_adresse')" class="mt-2" />
             </div>
 
             <br>
@@ -29,6 +25,7 @@
             <div>
                 <x-input-label for="ville" :value="__('Ville')" />
                 <x-text-input id="ville" class="block mt-1 w-full" type="text" name="ville"/>
+                <x-input-error :messages="$errors->get('ville')" class="mt-2" />
             </div>
 
             <br>
@@ -37,6 +34,7 @@
             <div>
                 <x-input-label for="code_postal" :value="__('Code postal')" />
                 <x-text-input id="code_postal" class="block mt-1 w-full" type="text" name="code_postal"/>
+                <x-input-error :messages="$errors->get('code_postal')" class="mt-2" />
             </div>
 
             <br>
@@ -46,6 +44,7 @@
             <div>
                 <x-input-label for="adresse_facturation" :value="__('Adresse de facturation')" />
                 <x-text-input id="adresse_facturation" class="block mt-1 w-full" type="text" name="adresse_facturation"/>
+                <x-input-error :messages="$errors->get('adresse_facturation')" class="mt-2" />
             </div>
 
 

@@ -50,5 +50,7 @@ class PDFController extends Controller
             // Gérer l'exception
             return response()->json(['error' => 'Erreur lors de la génération du PDF: ' . $e->getMessage()], 500);
         }
+
+        return redirect()->route('dashboard')->with('success', 'La facture est en cour de téléchargement !');
     }
 }

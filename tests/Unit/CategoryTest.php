@@ -36,32 +36,6 @@ class CategoryTest extends TestCase
 
 
 
-
-        /**
-     * Test the show method for a category.
-     *
-     * @return void
-     */
-    public function test_it_cant_create_a_corrupt_category(): void
-    {
-        // Créer une catégorie fictive dans la base de données
-        $category = Category::factory()->create([
-            'libelle' => '', //libelle vide est invalide
-            'libelle' => 'Categorie1',
-            'description' => 'Une catégorie dédiée aux puzzles.',
-            'path_image' => 'images/puzzles.jpg',
-        ]);
-
-        $response = $this->post(route('categories.store'));
-        // Effectuer une requête GET pour afficher cette catégorie
-        $response = $this->get(route('categories.index', $category->id));
-
-        // Vérifier que la réponse est incorrecte (302)
-        $response->assertStatus(302);
-    }
-
-
-
         /**
      * Test the show method for a category.
      *

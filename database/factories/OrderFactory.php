@@ -20,7 +20,6 @@ class OrderFactory extends Factory
                 ['id' => 2, 'name' => 'Puzzle 2', 'quantity' => 1],
             ]),
             'total_prix' => 50.00,
-            'methode_paiement' => 'Stripe',
             'user_id' => User::factory(), // Create a user for each order
         ];
     }

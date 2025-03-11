@@ -60,8 +60,20 @@ class AdresseController extends Controller
         $data = $request->validate([
             'deliv_adresse' => 'required|string|max:255',
             'ville' => 'required|string|max:255',
-            'code_postal' => 'required|numeric|digits_between:4,10',
+            'code_postal' => 'required|numeric|regex:/^\d{5}$/',
             'adresse_facturation' => 'required|string|max:255',
+        ], 
+        // Message d'erreur en cas de mauvaises saisies
+        [
+            'deliv_adresse.required' => "L'adresse de livraison est obligatoire.",
+            'deliv_adresse.string' => "L'adresse de livraison doit être une chaîne de caractères.",
+            'ville.required' => "La ville est obligatoire.",
+            'ville.string' => "La ville doit être une chaîne de caractères.",
+            'code_postal.required' => "Le code postal est obligatoire.",
+            'code_postal.numeric' => "Le code postal doit être un nombre.",
+            'code_postal.regex' => "Le code postal doit contenir exactement 5 chiffres.",
+            'adresse_facturation.required' => "L'adresse de facturation est obligatoire.",
+            'adresse_facturation.string' => "L'adresse de facturation doit être une chaîne de caractères.",
         ]);
 
         if (auth()->check()) {

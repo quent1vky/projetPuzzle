@@ -10,6 +10,9 @@ use Tests\TestCase;
 
 class BasketTest extends TestCase
 {
+
+    use RefreshDatabase;
+    
     /**
      * Test when the user is logged in.
      *

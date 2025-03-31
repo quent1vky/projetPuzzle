@@ -11,7 +11,6 @@
         <h2>Commande #{{ $order->id }}</h2>
         <p>Date de la commande : {{ $order->date_commande }}</p>
         <p>Type de paiement : {{ $order->type_paiement }}</p>
-        <p>Méthode de paiement : {{ $order->methode_paiement }}</p>
         <p>Statut de la commande : {{ $order->statut_commande }}</p>
         <p>Total : {{ $order->total_prix }} €</p>
 

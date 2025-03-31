@@ -23,7 +23,6 @@ class PDFController extends Controller
                 $order = Order::where('user_id', $userId)->latest()->first();
             }
 
-
             // Charger la vue HTML pour la commande
             $html = view('pdf.view', ['order' => $order])->render();
 
